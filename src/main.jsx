@@ -7,6 +7,7 @@ import ProductDetail from './pages/ProductDetail';
 import DealerForm from './pages/DealerForm';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import Support from './pages/Support';
 import './styles/index.css';
 
 function AppRoutes() {
@@ -17,6 +18,7 @@ function AppRoutes() {
         <Route path="/products" element={<Products />} />
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/become-dealer" element={<DealerForm />} />
+        <Route path="/support" element={<Support />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>

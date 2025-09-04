@@ -18,13 +18,13 @@ export default function AdminLogin(){
   }
 
   return (
-    <div style={{minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center'}}>
-      <div style={{width:420, padding:24, borderRadius:8, boxShadow:'0 6px 24px rgba(0,0,0,0.1)'}}>
-        <h2>Admin Login</h2>
-        <form onSubmit={handleSubmit(onSubmit)} style={{display:'grid', gap:12}}>
-          <input {...register('email')} placeholder="Email" className="form-input" />
-          <input {...register('password')} type="password" placeholder="Password" className="form-input" />
-          <button className="btn">Login</button>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-[420px] max-w-[92vw] rounded-lg bg-white p-6 shadow-xl">
+        <h2 className="text-xl font-semibold">Admin Login</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-4 grid gap-3">
+          <input {...register('email')} placeholder="Email" className="w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-brand" />
+          <input {...register('password')} type="password" placeholder="Password" className="w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-brand" />
+          <button className="rounded-md bg-brand px-4 py-2 text-white">Login</button>
         </form>
       </div>
     </div>

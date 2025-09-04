@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import api from '../api/api';
 
 export default function ProductDetail(){
@@ -16,26 +16,31 @@ export default function ProductDetail(){
     }
     load();
   }, [slug]);
-  if(!product) return <div>Loading...</div>;
+  if(!product) return <div className="container mx-auto px-4 py-8">Loading...</div>;
+  const img = product.images?.[0]?.url || '/placeholder.svg';
   return (
     <>
       <Header />
-      <div className="container" style={{padding:'32px 0'}}>
-        <div style={{display:'flex',gap:24, alignItems:'flex-start'}}>
-          <div style={{flex:1}}>
-            <img src={product.images?.[0]?.url || 'https://via.placeholder.com/800x500'} alt={product.name} style={{width:'100%', borderRadius:8}} />
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
+          <div className="flex-1 w-full">
+            <img src={img} onError={(e)=>{ e.currentTarget.onerror=null; e.currentTarget.src='/placeholder.svg'; }} alt={product.name} className="w-full rounded-lg object-cover" />
           </div>
-          <div style={{width:420}}>
-            <h1>{product.name}</h1>
-            <p style={{color:'#444'}}>{product.description}</p>
-            <div style={{marginTop:12}}>
-              <a href={product.brochureUrl} className="btn" target="_blank">Download Brochure</a>
-              <a href="/become-dealer" className="btn" style={{marginLeft:8}}>Request Bulk Quote</a>
+          <div className="w-full lg:w-[420px]">
+            <h1 className="text-2xl font-semibold">{product.name}</h1>
+            <p className="mt-2 text-slate-700">{product.description}</p>
+            <div className="mt-3 flex flex-wrap gap-3">
+              {product.brochureUrl && (
+                <a href={product.brochureUrl} className="inline-flex items-center rounded-md bg-brand px-4 py-2 text-white hover:opacity-90" target="_blank" rel="noreferrer">Download Brochure</a>
+              )}
+              <Link to="/become-dealer" className="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-white hover:opacity-90">Request Bulk Quote</Link>
             </div>
-            <div style={{marginTop:16}}>
-              <h3>Specifications</h3>
-              <ul>
-                {product.specs && Object.entries(product.specs).map(([k,v]) => <li key={k}><strong>{k}:</strong> {v}</li>)}
+            <div className="mt-4">
+              <h3 className="text-lg font-medium">Specifications</h3>
+              <ul className="mt-2 list-disc pl-5 space-y-1">
+                {product.specs && Object.entries(product.specs).map(([k,v]) => (
+                  <li key={k}><span className="font-semibold">{k}:</span> {v}</li>
+                ))}
               </ul>
             </div>
           </div>
