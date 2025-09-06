@@ -62,9 +62,11 @@ if (checking) return <div className="p-5">Loading...</div>;
       <div className="container mx-auto px-4 py-6">
         <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
 
-        <div className="mt-4 flex gap-2">
-          <button className={`rounded-md px-3 py-1.5 text-sm ${activeTab==='products' ? 'bg-blue-600 text-white' : 'bg-slate-200'}`} onClick={()=>setActiveTab('products')}>Products</button>
-          <button className={`rounded-md px-3 py-1.5 text-sm ${activeTab==='dealers' ? 'bg-blue-600 text-white' : 'bg-slate-200'}`} onClick={()=>setActiveTab('dealers')}>Dealers</button>
+        <div className="sticky top-14 z-40 -mx-4 bg-white/90 backdrop-blur border-b">
+          <div className="mx-4 py-2 flex gap-2">
+            <button className={`rounded-md px-3 py-1.5 text-sm ${activeTab==='products' ? 'bg-blue-600 text-white' : 'bg-slate-200'}`} onClick={()=>setActiveTab('products')}>Products</button>
+            <button className={`rounded-md px-3 py-1.5 text-sm ${activeTab==='dealers' ? 'bg-blue-600 text-white' : 'bg-slate-200'}`} onClick={()=>setActiveTab('dealers')}>Dealers</button>
+          </div>
         </div>
 
         {activeTab === 'products' && (
@@ -75,7 +77,11 @@ if (checking) return <div className="p-5">Loading...</div>;
             </div>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {products.map((p) => (
-                <div key={p._id} className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
+                <div
+                  key={p._id}
+                  className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm cursor-pointer hover:shadow-md"
+                  onClick={()=> nav(`/product/${p.slug}`)}
+                >
                   <img
                     src={p.images?.[0]?.url || '/placeholder.svg'}
                     alt={p.name}
@@ -85,8 +91,8 @@ if (checking) return <div className="p-5">Loading...</div>;
                   <div className="pt-2">
                     <strong>{p.name}</strong>
                     <div className="mt-2 flex gap-2">
-                      <button className="rounded-md border px-3 py-1.5 text-sm" onClick={()=>setEditing(p)}>Edit</button>
-                      <button className="rounded-md bg-red-600 px-3 py-1.5 text-sm text-white" onClick={()=>deleteProduct(p._id)}>Delete</button>
+                      <button className="rounded-md border px-3 py-1.5 text-sm" onClick={(e)=>{ e.stopPropagation(); setEditing(p); }}>Edit</button>
+                      <button className="rounded-md bg-red-600 px-3 py-1.5 text-sm text-white" onClick={(e)=>{ e.stopPropagation(); deleteProduct(p._id); }}>Delete</button>
                     </div>
                   </div>
                 </div>

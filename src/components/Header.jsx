@@ -41,7 +41,7 @@ export default function Header(){
           <nav className="hidden md:flex items-center gap-4">
             <Link to="/products" className="hover:opacity-90">Products</Link>
             <Link to="/support" className="hover:opacity-90">Support</Link>
-            <Link to="/become-dealer" className="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-medium hover:bg-white/20">Become a Dealer</Link>
+            <Link to="/become-dealer" className="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-medium hover:bg-white/20">Business Enquiry</Link>
             {isAdmin ? (
               <>
                 <Link to="/admin" className="text-sm opacity-90 hover:opacity-100">Dashboard</Link>
@@ -55,7 +55,7 @@ export default function Header(){
           {/* Mobile: mini nav + hamburger */}
           <div className="flex items-center gap-3 md:hidden">
             <Link to="/products" className="text-sm hover:opacity-90">Products</Link>
-            <Link to="/become-dealer" className="text-sm inline-flex items-center rounded-md bg-white/10 px-2.5 py-1.5 font-medium hover:bg-white/20">Become a Dealer</Link>
+            <Link to="/become-dealer" className="text-sm inline-flex items-center rounded-md bg-white/10 px-2.5 py-1.5 font-medium hover:bg-white/20">Business Enquiry</Link>
             <button aria-label="Open menu" onClick={() => setOpen(true)} className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 hover:bg-white/10">
               <span className="block h-0.5 w-5 bg-white"></span>
               <span className="block h-0.5 w-5 bg-white mt-1"></span>
