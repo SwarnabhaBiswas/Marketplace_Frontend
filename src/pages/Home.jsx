@@ -61,6 +61,8 @@ export default function Home(){
 
   // Categories for scroller
   const [categories, setCategories] = useState([]);
+  const catRef = useRef(null);
+  const drag = useRef({ active: false, startX: 0, startY: 0, scrollLeft: 0 });
   useEffect(()=>{
     (async ()=>{
       try{
@@ -82,6 +84,45 @@ export default function Home(){
   function getCatImg(name){
     const key = (name||'').toLowerCase();
     return catImgMap[key] || '/cat-default.svg';
+  }
+
+  // Horizontal drag-to-scroll and wheel support for categories
+  function onCatPointerDown(e){
+    const el = catRef.current; if(!el) return;
+    drag.current = { active: false, startX: e.clientX, startY: e.clientY, scrollLeft: el.scrollLeft };
+    // Do not capture immediately; wait to see direction
+  }
+  function onCatPointerMove(e){
+    const el = catRef.current; if(!el) return;
+    const d = drag.current;
+    const dx = e.clientX - d.startX;
+    const dy = e.clientY - d.startY;
+
+    if (!d.active) {
+      // Engage horizontal drag only if horizontal intent is clear
+      if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
+        d.active = true;
+        try { el.setPointerCapture(e.pointerId); } catch {}
+      } else {
+        // Let vertical scroll pass through
+        return;
+      }
+    }
+    // If dragging horizontally, update scroll
+    el.scrollLeft = d.scrollLeft - dx;
+  }
+  function onCatPointerUp(e){
+    const el = catRef.current; if(!el) return;
+    drag.current.active = false;
+    try { el.releasePointerCapture(e.pointerId); } catch {}
+  }
+  function onCatWheel(e){
+    const el = catRef.current; if(!el) return;
+    // Convert vertical wheel into horizontal scroll when more vertical than horizontal
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      e.preventDefault();
+      el.scrollBy({ left: e.deltaY, behavior: 'auto' });
+    }
   }
 
   return (
@@ -138,19 +179,29 @@ export default function Home(){
               {/* Right scroller */}
               <div className="lg:col-span-2">
                 <div className="relative pb-12">
-                  <div className="overflow-x-auto scroll-smooth no-scrollbar" id="catScroller">
-                    <div className="flex gap-5 pr-10 justify-center">
-                      {catsToShow.slice(0,6).map((c) => (
-                        <Link key={c} to={`/products?category=${encodeURIComponent(c)}`} className="group w-[260px] sm:w-[300px] md:w-[320px] flex-shrink-0">
-                          <div className="h-[180px] sm:h-[200px] md:h-[220px] overflow-hidden rounded-xl bg-white shadow-lg">
+                  <div
+                    ref={catRef}
+                    id="catScroller"
+                    className="overflow-x-auto scroll-smooth no-scrollbar touch-auto select-none cursor-grab active:cursor-grabbing snap-x snap-mandatory"
+                    onPointerDown={onCatPointerDown}
+                    onPointerMove={onCatPointerMove}
+                    onPointerUp={onCatPointerUp}
+                    onPointerCancel={onCatPointerUp}
+                    onWheel={onCatWheel}
+                    style={{ WebkitOverflowScrolling: 'touch' }}
+                  >
+                    <div className="flex gap-5 pr-10 justify-start">
+                      {catsToShow.slice(0, 12).map((c) => (
+                        <Link key={c} to={`/products?category=${encodeURIComponent(c)}`} className="group w-[240px] sm:w-[280px] md:w-[320px] flex-shrink-0 snap-start">
+                          <div className="h-[170px] sm:h-[200px] md:h-[220px] overflow-hidden rounded-xl bg-white shadow-lg">
                             <img src={getCatImg(c)} alt={`${c} category`} className="h-full w-full object-cover transition-transform duration-300 ease-out md:group-hover:scale-110 active:scale-95" />
                           </div>
                           <div className="mt-2 text-base sm:text-lg font-medium text-white/90">{c}</div>
                         </Link>
                       ))}
                       {/* Explore all categories box */}
-                      <Link to="/products" className="group w-[260px] sm:w-[300px] md:w-[320px] flex-shrink-0">
-                        <div className="relative h-[180px] sm:h-[200px] md:h-[220px] overflow-hidden rounded-xl bg-white shadow-lg">
+                      <Link to="/products" className="group w-[240px] sm:w-[280px] md:w-[320px] flex-shrink-0 snap-start">
+                        <div className="relative h-[170px] sm:h-[200px] md:h-[220px] overflow-hidden rounded-xl bg-white shadow-lg">
                           <img src="/category-see-all.svg" alt="Explore all categories" className="h-full w-full object-cover" />
                           <div className="absolute inset-0 flex items-center justify-center">
                             <span className="rounded-full bg-black/40 px-4 py-2 text-white">Explore all</span>
@@ -160,10 +211,22 @@ export default function Home(){
                       </Link>
                     </div>
                   </div>
-                  {/* Arrows with spacing */}
-                  <div className="absolute bottom-0 right-0 mb-1 flex gap-2">
-                    <button aria-label="Prev" onClick={()=>{ const el=document.getElementById('catScroller'); if(el) el.scrollBy({left:-300, behavior:'smooth'}); }} className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center">‹</button>
-                    <button aria-label="Next" onClick={()=>{ const el=document.getElementById('catScroller'); if(el) el.scrollBy({left:300, behavior:'smooth'}); }} className="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center">›</button>
+                  {/* Arrows anchored to bottom-right of the section */}
+                  <div className="pointer-events-none absolute bottom-2 right-2 sm:bottom-0 sm:right-0 mb-1 flex gap-2">
+                    <button
+                      aria-label="Prev"
+                      onClick={() => { const el = catRef.current; if (el) el.scrollBy({ left: -320, behavior: 'smooth' }); }}
+                      className="pointer-events-auto h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      aria-label="Next"
+                      onClick={() => { const el = catRef.current; if (el) el.scrollBy({ left: 320, behavior: 'smooth' }); }}
+                      className="pointer-events-auto h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center"
+                    >
+                      ›
+                    </button>
                   </div>
                 </div>
               </div>

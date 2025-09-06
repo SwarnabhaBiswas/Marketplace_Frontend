@@ -42,7 +42,7 @@ export default function Header(){
             <Link to="/products" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Products</Link>
             <Link to="/about" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">About</Link>
             <Link to="/support" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Support</Link>
-            <Link to="/become-dealer" className="inline-flex h-10 items-center rounded-md bg-accent/20 px-4 text-base font-medium text-platinum hover:bg-accent/30">Business Enquiry</Link>
+            <Link to="/become-dealer" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Business Enquiry</Link>
             {isAdmin ? (
               <>
                 <Link to="/admin" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Dashboard</Link>
