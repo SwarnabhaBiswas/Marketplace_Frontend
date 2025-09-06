@@ -3,3 +3,23 @@
 @tailwind utilities;
 
 /* Tailwind is now the primary styling system. */
+
+:root {
+  --color-primary: #0A2540;   /* Deep Navy Blue */
+  --color-neutral: #d9d9d9ff;   /* Steel Grey */
+  --color-accent: #1D9BF0;    /* Bright Electric Blue */
+  --color-attention: #FF6B00; /* Safety Orange */
+  --color-platinum: #F9FAFB;  /* Platinum White */
+}
+
+@layer base {
+  html, body, #root { @apply overflow-x-hidden; }
+  body { @apply bg-platinum text-primary; }
+  a { @apply text-neutral; }
+}
+
+@layer utilities {
+  /* Hide scrollbar but keep scroll functionality */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}

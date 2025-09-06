@@ -29,7 +29,7 @@ export default function Header(){
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-brand text-white">
+    <header className="sticky top-0 z-50 bg-primary text-platinum">
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between">
           {/* Left: Logo */}
@@ -38,25 +38,26 @@ export default function Header(){
           </div>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-4">
-            <Link to="/products" className="hover:opacity-90">Products</Link>
-            <Link to="/support" className="hover:opacity-90">Support</Link>
-            <Link to="/become-dealer" className="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-medium hover:bg-white/20">Business Enquiry</Link>
+          <nav className="hidden md:flex items-center gap-8">
+            <Link to="/products" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Products</Link>
+            <Link to="/about" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">About</Link>
+            <Link to="/support" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Support</Link>
+            <Link to="/become-dealer" className="inline-flex h-10 items-center rounded-md bg-accent/20 px-4 text-base font-medium text-platinum hover:bg-accent/30">Business Enquiry</Link>
             {isAdmin ? (
               <>
-                <Link to="/admin" className="text-sm opacity-90 hover:opacity-100">Dashboard</Link>
-                <button onClick={doLogout} className="text-sm opacity-80 hover:opacity-100">Logout</button>
+                <Link to="/admin" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Dashboard</Link>
+                <button onClick={doLogout} className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Logout</button>
               </>
             ) : (
-              <Link to="/admin/login" className="text-sm opacity-80 hover:opacity-100">Admin Login</Link>
+              <Link to="/admin/login" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Admin Login</Link>
             )}
           </nav>
 
           {/* Mobile: mini nav + hamburger */}
-          <div className="flex items-center gap-3 md:hidden">
-            <Link to="/products" className="text-sm hover:opacity-90">Products</Link>
-            <Link to="/become-dealer" className="text-sm inline-flex items-center rounded-md bg-white/10 px-2.5 py-1.5 font-medium hover:bg-white/20">Business Enquiry</Link>
-            <button aria-label="Open menu" onClick={() => setOpen(true)} className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/20 hover:bg-white/10">
+          <div className="flex items-center gap-4 md:hidden">
+            <Link to="/products" className="text-base text-neutral hover:text-platinum">Products</Link>
+            <Link to="/become-dealer" className="text-base inline-flex items-center rounded-md bg-accent/20 px-3 py-1.5 font-medium text-platinum">Business Enquiry</Link>
+            <button aria-label="Open menu" onClick={() => setOpen(true)} className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-platinum/30">
               <span className="block h-0.5 w-5 bg-white"></span>
               <span className="block h-0.5 w-5 bg-white mt-1"></span>
               <span className="block h-0.5 w-5 bg-white mt-1"></span>
@@ -75,7 +76,8 @@ export default function Header(){
               <button aria-label="Close menu" onClick={() => setOpen(false)} className="text-slate-600 hover:text-slate-900">✕</button>
             </div>
             <nav className="p-4 flex flex-col gap-2">
-              {/* Keep Support/Contact/Admin links in sidebar */}
+              {/* Keep About/Support/Admin links in sidebar */}
+              <Link to="/about" onClick={() => setOpen(false)} className="px-2 py-2 rounded hover:bg-slate-100">About</Link>
               <Link to="/support" onClick={() => setOpen(false)} className="px-2 py-2 rounded hover:bg-slate-100">Support</Link>
               {isAdmin ? (
                 <>

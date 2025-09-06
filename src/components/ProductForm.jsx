@@ -15,6 +15,9 @@ const defaults = {
 export default function ProductForm({ initial, onSaved }) {
   const [form, setForm] = useState(() => ({ ...defaults, ...(initial || {}) }));
   const [uploading, setUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [addingCategory, setAddingCategory] = useState(false);
+  const [newCategory, setNewCategory] = useState('');
 
   // cropping flow state
   const [cropOpen, setCropOpen] = useState(false);
@@ -27,6 +30,16 @@ export default function ProductForm({ initial, onSaved }) {
   useEffect(() => {
     setForm({ ...defaults, ...(initial || {}) });
   }, [initial]);
+
+  useEffect(() => {
+    async function loadCats(){
+      try{
+        const res = await api.get('/categories');
+        setCategories(res.data.data || []);
+      }catch(e){ console.error(e); }
+    }
+    loadCats();
+  }, []);
 
   function setField(k, v) {
     setForm((prev) => ({ ...prev, [k]: v }));
@@ -156,13 +169,52 @@ async function save() {
           required
           className="w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-brand"
         />
-<input
-          placeholder="Category*"
-          value={form.category}
-          onChange={e => setField('category', e.target.value)}
-          required
-          className="w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-brand"
-        />
+<div>
+          <label className="block text-sm font-medium">Category<span className="text-red-600">*</span></label>
+          <div className="mt-1 flex items-center gap-2">
+            <select
+              value={form.category || ''}
+              onChange={e => setField('category', e.target.value)}
+              className="w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-brand"
+              required
+            >
+              <option value="" disabled>Select category</option>
+              {categories.map(c => (
+                <option key={c._id} value={c.name}>{c.name}</option>
+              ))}
+              {form.category && !categories.find(c=>c.name===form.category) && (
+                <option value={form.category}>{form.category}</option>
+              )}
+            </select>
+            <button type="button" className="rounded-md border px-3 py-2 text-sm" onClick={()=>{ setAddingCategory(true); setNewCategory(''); }}>Add new</button>
+          </div>
+
+          {addingCategory && (
+            <div className="mt-2 flex items-center gap-2">
+              <input
+                value={newCategory}
+                onChange={e=>setNewCategory(e.target.value)}
+                placeholder="New category name"
+                className="w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-brand"
+              />
+              <button type="button" className="rounded-md bg-brand px-3 py-2 text-white" onClick={async ()=>{
+                const name = newCategory.trim();
+                if (!name) return;
+                try {
+                  const res = await api.post('/categories', { name });
+                  const catDoc = res.data.data;
+                  setCategories(prev => {
+                    const exists = prev.find(c=>c._id===catDoc._id);
+                    return exists ? prev : [...prev, catDoc].sort((a,b)=>a.name.localeCompare(b.name));
+                  });
+                  setField('category', catDoc.name);
+                  setAddingCategory(false);
+                } catch (e) { console.error(e); alert('Failed to add category'); }
+              }}>Save</button>
+              <button type="button" className="rounded-md border px-3 py-2 text-sm" onClick={()=>setAddingCategory(false)}>Cancel</button>
+            </div>
+          )}
+        </div>
         <textarea
           placeholder="Description"
           value={form.description}
