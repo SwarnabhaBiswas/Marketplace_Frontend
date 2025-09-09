@@ -43,7 +43,7 @@ export default function Hero() {
   return (
     <section className="relative bg-neutral text-platinum">
       <div
-        className="relative h-[70vh] sm:h-[80vh] lg:h-[92vh] overflow-hidden pt-10"
+        className="relative h-[70vh] sm:h-[80vh] lg:h-[95vh] overflow-hidden "
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
