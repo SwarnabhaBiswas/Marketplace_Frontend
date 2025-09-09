@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../api/api';
 import ImageCropperModal from './ImageCropperModal';
+import Swal from 'sweetalert2';
 
 const CLOUDINARY_PLACEHOLDER_URL = "/placeholder.svg";
 
@@ -15,6 +16,7 @@ const defaults = {
 export default function ProductForm({ initial, onSaved }) {
   const [form, setForm] = useState(() => ({ ...defaults, ...(initial || {}) }));
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [categories, setCategories] = useState([]);
   const [addingCategory, setAddingCategory] = useState(false);
   const [newCategory, setNewCategory] = useState('');
@@ -62,7 +64,7 @@ async function handleFile(e) {
     } catch (err) {
       console.error(err);
       setUploading(false);
-      alert('Upload init failed');
+      await Swal.fire({ title: 'Upload failed to start', text: 'Please try again later.', icon: 'error', confirmButtonText: 'OK' });
     }
   }
 
@@ -93,7 +95,7 @@ async function handleCropped(blob) {
     await uploadCroppedBlob(blob);
   } catch (e) {
     console.error(e);
-    alert('Upload failed');
+    await Swal.fire({ title: 'Upload failed', text: 'Please try again.', icon: 'error', confirmButtonText: 'OK' });
   }
   // proceed to next file if any
   const nextIndex = pendingIndex + 1;
@@ -135,32 +137,35 @@ function cancelCropping() {
       }));
     } catch (err) {
       console.error(err);
-      alert('Failed to delete image');
+      await Swal.fire({ title: 'Delete failed', text: 'Could not remove the image.', icon: 'error', confirmButtonText: 'OK' });
     }
   }
 
 async function save() {
     try {
       if (!form.name?.trim() || !form.category?.trim()) {
-        alert('Please fill required fields: Name and Category');
+        await Swal.fire({ title: 'Required fields missing', text: 'Please fill Name and Category.', icon: 'warning', confirmButtonText: 'OK' });
         return;
       }
+      setSaving(true);
       if (form._id) {
         await api.put('/products/' + form._id, form);
       } else {
         await api.post('/products', form);
       }
-      alert('Saved');
+      await Swal.fire({ title: 'Saved', icon: 'success', confirmButtonText: 'OK' });
       if (onSaved) onSaved();
     } catch (err) {
       console.error(err);
-      alert('Save failed');
+      await Swal.fire({ title: 'Save failed', text: 'Please try again later.', icon: 'error', confirmButtonText: 'OK' });
+    } finally {
+      setSaving(false);
     }
   }
 
   return (
     <>
-    <div>
+    <div aria-busy={(uploading || saving) ? 'true' : 'false'}>
       <div className="grid gap-3">
 <input
           placeholder="Name*"
@@ -186,7 +191,7 @@ async function save() {
                 <option value={form.category}>{form.category}</option>
               )}
             </select>
-            <button type="button" className="rounded-md border px-3 py-2 text-sm" onClick={()=>{ setAddingCategory(true); setNewCategory(''); }}>Add new</button>
+            <button type="button" className="rounded-md border px-3 py-2 text-sm bg-attention text-platinum" onClick={()=>{ setAddingCategory(true); setNewCategory(''); }}>Add</button>
           </div>
 
           {addingCategory && (
@@ -209,7 +214,7 @@ async function save() {
                   });
                   setField('category', catDoc.name);
                   setAddingCategory(false);
-                } catch (e) { console.error(e); alert('Failed to add category'); }
+                } catch (e) { console.error(e); await Swal.fire({ title: 'Failed to add category', icon: 'error', confirmButtonText: 'OK' }); }
               }}>Save</button>
               <button type="button" className="rounded-md border px-3 py-2 text-sm" onClick={()=>setAddingCategory(false)}>Cancel</button>
             </div>
@@ -222,7 +227,7 @@ async function save() {
           className="w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-brand"
         />
         <div className="flex items-center gap-2">
-          <label className="inline-flex items-center rounded-md bg-slate-900 px-3 py-2 text-white hover:opacity-90">
+          <label className="inline-flex items-center rounded-md bg-attention px-3 py-2 text-white hover:opacity-90">
             Upload Images
             <input type="file" multiple onChange={handleFile} className="hidden" />
           </label>
@@ -243,7 +248,7 @@ async function save() {
               <button
                 type="button"
                 onClick={() => removeImage(img.publicId)}
-                className="absolute right-1.5 top-1.5 rounded bg-black/60 px-1.5 py-0.5 text-xs text-white"
+                className="absolute right-1.5 top-1.5 rounded bg-red/600 px-1.5 py-0.5 text-xs text-white"
                 aria-label="Remove image"
               >
                 ×
@@ -252,8 +257,9 @@ async function save() {
           ))}
         </div>
         <div>
-          <button onClick={save} className="rounded-md bg-brand px-4 py-2 text-white">
-            Save Product
+          <button onClick={save} disabled={saving} className="rounded-md bg-brand px-4 py-2 text-white disabled:opacity-60 inline-flex items-center gap-2">
+            {saving && <span className="h-4 w-4 rounded-full bg-gradient-to-tr from-accent to-attention p-[1px] animate-spin-slow"><span className="block h-full w-full rounded-full bg-transparent"></span></span>}
+            {saving ? 'Saving…' : 'Save Product'}
           </button>
         </div>
       </div>

@@ -1,0 +1,32 @@
+/* src/styles/glass.css */
+.glass {
+  /* base translucent background — tweak opacity to taste */
+  background-color: rgba(255, 255, 255, 0.686); /* works for dark hero backgrounds */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  box-shadow: 0 6px 20px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+  border-radius: 12px;
+}
+
+/* Lighter glass for white backgrounds (cards) */
+.glass-light {
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255,255,255,0.6);
+  color: #0b1220;
+}
+
+/* Respect reduced-motion / users who prefer less visual effects */
+@media (prefers-reduced-motion: reduce) {
+  .glass {
+    transition: none !important;
+  }
+}
+
+/* Fallback for browsers without backdrop-filter — slightly darker semi-transparent bg */
+@supports not ((-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px))) {
+  .glass {
+    background-color: rgba(10, 16, 32, 0.6); /* stronger fallback */
+    box-shadow: 0 6px 20px rgba(2,6,23,0.7);
+  }
+}

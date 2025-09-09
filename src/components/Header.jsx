@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import api from '../api/api';
 
 export default function Header(){
   const [isAdmin, setIsAdmin] = useState(false);
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -17,7 +19,10 @@ export default function Header(){
         if (mounted) setIsAdmin(false);
       }
     })();
-    return () => { mounted = false; };
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => { mounted = false; window.removeEventListener('scroll', onScroll); };
   }, []);
 
   async function doLogout() {
@@ -28,69 +33,76 @@ export default function Header(){
     setOpen(false);
   }
 
+  const linkBase = `text-[1.15rem] font-medium inline-flex h-12 items-center px-3 text-base text-primary relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:bg-primary after:w-0 after:transition-[width] after:duration-300 hover:after:w-full`;
+  const navClass = ({ isActive }) => `${linkBase} ${isActive ? 'text-orange-500 after:bg-attention' : ''}`;
+
   return (
-    <header className="sticky top-0 z-50 bg-primary text-platinum">
+    <header role="navigation" aria-label="Main" className={`fixed top-0 z-50 w-full transition-all duration-300 ${scrolled ? 'bg-white/60 backdrop-blur-md supports-[backdrop-filter]:backdrop-blur-xl shadow-md' : 'bg-transparent'}`}>
       <div className="container mx-auto px-4">
-        <div className="flex h-14 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           {/* Left: Logo */}
-          <div className="font-extrabold text-lg">
-            <Link to="/">Swasti</Link>
+          <div className='md:block'>
+            <Link to="/"><img src='/logo.png' alt='logo' className="md:px-20 h-[5em] md:h-[7em]"></img></Link>
           </div>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
-            <Link to="/products" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Products</Link>
-            <Link to="/about" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">About</Link>
-            <Link to="/support" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Support</Link>
-            <Link to="/become-dealer" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Business Enquiry</Link>
+          <nav className="hidden md:flex items-center gap-8 md:px-20">
+            <NavLink to="/" className={navClass}>Home</NavLink>
+            <NavLink to="/products" className={navClass}>Products</NavLink>
+            <NavLink to="/about" className={navClass}>About</NavLink>
+            <NavLink to="/support" className={navClass}>Support</NavLink>
+            <NavLink to="/become-dealer" className={navClass}>Business Enquiry</NavLink>
             {isAdmin ? (
               <>
-                <Link to="/admin" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Dashboard</Link>
-                <button onClick={doLogout} className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Logout</button>
+                <NavLink to="/admin" className={navClass}>Dashboard</NavLink>
+                <button onClick={doLogout} className={linkBase}>Logout</button>
               </>
             ) : (
-              <Link to="/admin/login" className="inline-flex h-10 items-center px-3 text-base text-neutral hover:text-platinum">Admin Login</Link>
+              <NavLink to="/admin/login" className={navClass}>Admin Login</NavLink>
             )}
           </nav>
 
           {/* Mobile: mini nav + hamburger */}
-          <div className="flex items-center gap-4 md:hidden">
-            <Link to="/products" className="text-base text-neutral hover:text-platinum">Products</Link>
-            <Link to="/become-dealer" className="text-base inline-flex items-center rounded-md bg-accent/20 px-3 py-1.5 font-medium text-platinum">Business Enquiry</Link>
-            <button aria-label="Open menu" onClick={() => setOpen(true)} className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-platinum/30">
-              <span className="block h-0.5 w-5 bg-white"></span>
-              <span className="block h-0.5 w-5 bg-white mt-1"></span>
-              <span className="block h-0.5 w-5 bg-white mt-1"></span>
+          <div className="flex items-center gap-4 md:hidden ">
+            <NavLink to="/products" className={({isActive})=>`text-base ${isActive?'text-accent':'text-primary'}`}>Products</NavLink>
+            <NavLink to="/become-dealer" className={({isActive})=>`text-white inline-flex items-center rounded-full bg-attention px-3 py-1.5 font-medium ${isActive?'text-accent':'text-platinum text-primary'}`}>Business</NavLink>
+            <button aria-label="Open menu" aria-expanded={open} onClick={() => setOpen(true)} className="inline-flex h-9 w-9 flex-col items-center justify-center rounded-md gap-1">
+              <span className="block h-0.5 w-5 bg-primary"></span>
+              <span className="block h-0.5 w-5 bg-primary"></span>
+              <span className="block h-0.5 w-5 bg-primary"></span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile sidebar */}
-      {open && (
-        <div className="fixed inset-0 z-50 md:hidden">
+      {open && createPortal(
+        <div className="fixed inset-0 z-[1000] md:hidden">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-0 h-full w-72 max-w-[80vw] bg-white text-slate-900 shadow-xl">
-            <div className="flex items-center justify-between p-4 border-b">
+          <div className="absolute right-0 top-0 h-full w-72 max-w-[80vw] bg-white text-primary shadow-2xl">
+            <div className="flex items-center justify-between p-4">
               <div className="font-bold">Menu</div>
-              <button aria-label="Close menu" onClick={() => setOpen(false)} className="text-slate-600 hover:text-slate-900">✕</button>
+              <button aria-label="Close menu" onClick={() => setOpen(false)} className="hover:opacity-80">✕</button>
             </div>
             <nav className="p-4 flex flex-col gap-2">
-              {/* Keep About/Support/Admin links in sidebar */}
-              <Link to="/about" onClick={() => setOpen(false)} className="px-2 py-2 rounded hover:bg-slate-100">About</Link>
-              <Link to="/support" onClick={() => setOpen(false)} className="px-2 py-2 rounded hover:bg-slate-100">Support</Link>
+              <NavLink to="/" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>Home</NavLink>
+              <NavLink to="/products" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>Products</NavLink>
+              <NavLink to="/become-dealer" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>Business</NavLink>
+              <NavLink to="/about" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>About</NavLink>
+              <NavLink to="/support" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>Support</NavLink>
+              <a href="/#contact" onClick={() => setOpen(false)} className={`px-2 py-2 rounded hover:bg-primary/5 text-primary`}>Contact</a>
               {isAdmin ? (
                 <>
-                  <Link to="/admin" onClick={() => setOpen(false)} className="px-2 py-2 rounded hover:bg-slate-100">Dashboard</Link>
-                  <button onClick={doLogout} className="text-left px-2 py-2 rounded hover:bg-slate-100">Logout</button>
+                  <NavLink to="/admin" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>Dashboard</NavLink>
+                  <button onClick={doLogout} className="text-left px-2 py-2 rounded hover:bg-primary/5 text-primary">Logout</button>
                 </>
               ) : (
-                <Link to="/admin/login" onClick={() => setOpen(false)} className="px-2 py-2 rounded hover:bg-slate-100">Admin Login</Link>
+                <NavLink to="/admin/login" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>Admin</NavLink>
               )}
             </nav>
           </div>
-        </div>
-      )}
+        </div>, document.body)
+      }
     </header>
   );
 }

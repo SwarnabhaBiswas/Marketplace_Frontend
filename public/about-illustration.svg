@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="560" height="360" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">About illustration</title>
+  <desc id="desc">Abstract factory and team shapes in brand colors</desc>
+  <defs>
+    <linearGradient id="abg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1D9BF0"/>
+      <stop offset="100%" stop-color="#FF6B00"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="560" height="360" rx="24" fill="#0A2540"/>
+  <g transform="translate(40 50)">
+    <rect x="0" y="0" width="200" height="120" rx="12" fill="#F9FAFB"/>
+    <rect x="20" y="20" width="80" height="12" rx="6" fill="#0A2540"/>
+    <rect x="20" y="40" width="120" height="10" rx="5" fill="#6B7280"/>
+    <rect x="20" y="60" width="140" height="10" rx="5" fill="#6B7280"/>
+  </g>
+  <g transform="translate(300 80)">
+    <rect x="0" y="0" width="220" height="180" rx="16" fill="#111827"/>
+    <rect x="30" y="40" width="160" height="16" rx="8" fill="url(#abg)"/>
+    <circle cx="110" cy="110" r="36" fill="#0A2540"/>
+  </g>
+</svg>
+

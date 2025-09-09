@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="560" height="360" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Dealer illustration</title>
+  <desc id="desc">Abstract ship and login theme in brand palette</desc>
+  <defs>
+    <linearGradient id="dgrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1D9BF0"/>
+      <stop offset="100%" stop-color="#FF6B00"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="560" height="360" rx="24" fill="#0A2540"/>
+  <g transform="translate(40 30)">
+    <path d="M0 220h280l-40-80-120 48-40-8z" fill="url(#dgrad)" opacity="0.9"/>
+    <circle cx="210" cy="160" r="14" fill="#F9FAFB"/>
+  </g>
+  <rect x="320" y="60" width="200" height="240" rx="16" fill="#111827"/>
+  <rect x="340" y="100" width="160" height="16" rx="8" fill="#1D9BF0" opacity="0.8"/>
+  <rect x="340" y="130" width="160" height="16" rx="8" fill="#FF6B00" opacity="0.8"/>
+  <rect x="340" y="200" width="80" height="20" rx="10" fill="#1D9BF0"/>
+</svg>
+
