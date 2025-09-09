@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
@@ -9,14 +9,18 @@ import { fadeSlideUp } from '../lib/motion';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
-  const [q, setQ] = useState('');
-  const [searchInput, setSearchInput] = useState('');
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const initialCat = searchParams.get('category') || 'all';
+  const initialQ = searchParams.get('q') || '';
+  const [q, setQ] = useState(initialQ);
+  const [searchInput, setSearchInput] = useState(initialQ);
   const [categories, setCategories] = useState([]);
-  const [cat, setCat] = useState('all');
+  const [cat, setCat] = useState(initialCat);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loadingPage, setLoadingPage] = useState(false);
-  const [searchParams] = useSearchParams();
+  const reqId = React.useRef(0);
 
   useEffect(() => {
     async function loadCats() {
@@ -28,34 +32,40 @@ export default function Products() {
       }
     }
     loadCats();
-
-    // initial filters
-    const initialCat = searchParams.get('category');
-    if (initialCat) setCat(initialCat);
-    const initialQ = searchParams.get('q');
-    if (initialQ) {
-      setQ(initialQ);
-      setSearchInput(initialQ);
-    }
   }, []);
 
+  // Keep filters in sync with URL query params (category, q)
+  useEffect(() => {
+    const sp = new URLSearchParams(location.search);
+    const urlCat = sp.get('category') || 'all';
+    const urlQ = sp.get('q') || '';
+
+    if (urlCat !== cat) setCat(urlCat);
+    if (urlQ !== q) {
+      setQ(urlQ);
+      setSearchInput(urlQ);
+    }
+  }, [location.search]);
+
   async function fetchPage(nextPage = 1) {
-    if (loadingPage) return;
+    const id = ++reqId.current;
     setLoadingPage(true);
     try {
       const params = { page: nextPage, limit: 12 };
       if (q) params.q = q;
       if (cat && cat !== 'all') params.category = cat;
       const res = await api.get('/products', { params });
+      if (id !== reqId.current) return; // ignore stale responses
       const data = res.data?.data || [];
       setProducts(data);
       const total = res.data?.total || 0;
       setTotalPages(Math.max(1, Math.ceil(total / 12)));
       setPage(nextPage);
     } catch (err) {
-      console.error(err);
+      if (id === reqId.current) console.error(err);
+    } finally {
+      if (id === reqId.current) setLoadingPage(false);
     }
-    setLoadingPage(false);
   }
 
   useEffect(() => {
@@ -71,9 +81,9 @@ export default function Products() {
       <Header />
       <main className="flex-1">
         {/* Hero banner */}
-        <section className="bg-accent text-white py-20 mt-20">
+        <section className="bg-primary text-white py-20 mt-20">
           <div className="container mx-auto px-6 text-center">
-            <h1 className="text-3xl font-bold mb-2">Explore Our Products</h1>
+            <h1 className="text-3xl font-bold mb-2 text-neutral">Explore Our Products</h1>
             <p className="text-platinum max-w-2xl mx-auto">
               Premium fittings, pipes, and electricals — designed for durability & reliability.
             </p>

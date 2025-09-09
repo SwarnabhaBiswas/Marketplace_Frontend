@@ -15,6 +15,10 @@ export default function AdminDashboard() {
   const [checking, setChecking] = useState(true);
   const [approvingId, setApprovingId] = useState(null);
   const [rejectingId, setRejectingId] = useState(null);
+  const [prodPage, setProdPage] = useState(1);
+  const [prodTotalPages, setProdTotalPages] = useState(1);
+  const [prodLoading, setProdLoading] = useState(false);
+  const PROD_LIMIT = 12;
   const nav = useNavigate();
 
   useEffect(() => {
@@ -34,12 +38,29 @@ export default function AdminDashboard() {
     })();
   }, []);
 
+  async function fetchProductsPage(nextPage = 1) {
+    if (prodLoading) return;
+    setProdLoading(true);
+    try {
+      const res = await api.get("/products", {
+        params: { page: nextPage, limit: PROD_LIMIT },
+      });
+      const data = res.data?.data || [];
+      const total = res.data?.total || 0;
+      setProducts(data);
+      setProdTotalPages(Math.max(1, Math.ceil(total / PROD_LIMIT)));
+      setProdPage(nextPage);
+    } catch (e) {
+      console.error(e);
+    }
+    setProdLoading(false);
+  }
+
   async function load() {
     try {
       const d = await api.get("/dealers");
       setDealers(d.data.data);
-      const p = await api.get("/products");
-      setProducts(p.data.data);
+      await fetchProductsPage(1);
     } catch {
       await Swal.fire({
         title: "Failed to load",
@@ -53,7 +74,7 @@ export default function AdminDashboard() {
     if (!confirm("Delete this product?")) return;
     try {
       await api.delete("/products/" + id);
-      load();
+      await fetchProductsPage(prodPage);
     } catch {
       alert("Delete failed");
     }
@@ -82,8 +103,8 @@ export default function AdminDashboard() {
             <button
               className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                 activeTab === "dealers"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
+                	? "bg-blue-600 text-white"
+                	: "bg-gray-200 hover:bg-gray-300"
               }`}
               onClick={() => setActiveTab("dealers")}
             >
@@ -106,45 +127,94 @@ export default function AdminDashboard() {
             </div>
 
             {products.length === 0 ? (
-              <p className="text-gray-500">No products found.</p>
+              <p className="text-gray-500">{prodLoading ? 'Loading…' : 'No products found.'}</p>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {products.map((p) => (
-                  <div
-                    key={p._id}
-                    className="rounded-lg border bg-white shadow hover:shadow-md transition p-3 flex flex-col"
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {products.map((p) => (
+                    <div
+                      key={p._id}
+                      className="rounded-lg border bg-white shadow hover:shadow-md transition p-3 flex flex-col"
+                    >
+                      {/* Product Image */}
+                      <div className="relative h-36 w-full mb-3">
+                        <img
+                          src={p.images?.[0]?.url || "/placeholder.svg"}
+                          alt={p.name}
+                          className="h-full w-full object-cover rounded-md"
+                          onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
+                        />
+                      </div>
+
+                      {/* Product Info */}
+                      <h3 className="text-lg font-semibold mb-2">{p.name}</h3>
+
+                      {/* Action Buttons */}
+                      <div className="mt-auto flex gap-2">
+                        <button
+                          className="flex-1 rounded-md border border-blue-600 px-3 py-1 text-sm text-blue-600 hover:bg-blue-600 hover:text-white"
+                          onClick={() => setEditing(p)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="flex-1 rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+                          onClick={() => deleteProduct(p._id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                <div className="mt-6 flex items-center justify-center gap-2">
+                  <button
+                    onClick={() => prodPage > 1 && fetchProductsPage(prodPage - 1)}
+                    disabled={prodPage === 1 || prodLoading}
+                    className="rounded-full px-3 py-1.5 text-sm bg-gray-200 text-gray-800 disabled:opacity-50"
                   >
-                    {/* Product Image */}
-                    <div className="relative h-36 w-full mb-3">
-                      <img
-                        src={p.images?.[0]?.url || "/placeholder.svg"}
-                        alt={p.name}
-                        className="h-full w-full object-cover rounded-md"
-                        onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
-                      />
-                    </div>
-
-                    {/* Product Info */}
-                    <h3 className="text-lg font-semibold mb-2">{p.name}</h3>
-
-                    {/* Action Buttons */}
-                    <div className="mt-auto flex gap-2">
+                    ‹
+                  </button>
+                  {(() => {
+                    const maxVisible = 5;
+                    const pages = [];
+                    const total = prodTotalPages;
+                    const page = prodPage;
+                    if (total <= maxVisible) {
+                      for (let i = 1; i <= total; i++) pages.push(i);
+                    } else {
+                      let start = Math.max(1, page - 2);
+                      let end = start + maxVisible - 1;
+                      if (end > total) {
+                        end = total;
+                        start = end - maxVisible + 1;
+                      }
+                      for (let i = start; i <= end; i++) pages.push(i);
+                    }
+                    return pages.map((n) => (
                       <button
-                        className="flex-1 rounded-md border border-blue-600 px-3 py-1 text-sm text-blue-600 hover:bg-blue-600 hover:text-white"
-                        onClick={() => setEditing(p)}
+                        key={n}
+                        onClick={() => fetchProductsPage(n)}
+                        disabled={prodLoading}
+                        className={`min-w-[2.25rem] rounded-full px-3 py-1.5 text-sm transition ${
+                          page === n ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800 hover:bg-blue-600 hover:text-white'
+                        }`}
                       >
-                        Edit
+                        {n}
                       </button>
-                      <button
-                        className="flex-1 rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
-                        onClick={() => deleteProduct(p._id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                    ));
+                  })()}
+                  <button
+                    onClick={() => prodPage < prodTotalPages && fetchProductsPage(prodPage + 1)}
+                    disabled={prodPage === prodTotalPages || prodLoading}
+                    className="rounded-full px-3 py-1.5 text-sm bg-gray-200 text-gray-800 disabled:opacity-50"
+                  >
+                    ›
+                  </button>
+                </div>
+              </>
             )}
           </section>
         )}
@@ -232,9 +302,9 @@ export default function AdminDashboard() {
               </div>
               <ProductForm
                 initial={editing}
-                onSaved={() => {
+                onSaved={async () => {
                   setEditing(null);
-                  load();
+                  await fetchProductsPage(prodPage);
                 }}
               />
             </div>
