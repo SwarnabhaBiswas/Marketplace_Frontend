@@ -1,8 +1,21 @@
 import axios from 'axios';
+import { beginNetwork, endNetwork } from '../lib/loading';
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
   withCredentials: true
 });
+
+// Interceptors to toggle global spinner
+api.interceptors.request.use((config) => {
+  if (!config?.noSpinner) beginNetwork();
+  return config;
+});
+api.interceptors.response.use(
+  (resp) => { if (!resp?.config?.noSpinner) endNetwork(); return resp; },
+  (err) => { if (!err?.config?.noSpinner) endNetwork(); return Promise.reject(err); }
+);
+
 export const updateDealerStatus = (id, status) =>
   api.put(`/dealers/${id}/status`, { status });
 

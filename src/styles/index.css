@@ -2,14 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tailwind is now the primary styling system. */
+
 
 :root {
-  --color-primary: #0A2540;   /* Deep Navy Blue */
-  --color-neutral: #d9d9d9ff;   /* Steel Grey */
-  --color-accent: #1D9BF0;    /* Bright Electric Blue */
-  --color-attention: #FF6B00; /* Safety Orange */
-  --color-platinum: #F9FAFB;  /* Platinum White */
+  --color-primary: #051c33;   
+  --color-neutral: #d9d9d9ff;   
+  --color-accent: #1D9BF0;    
+  --color-attention: #FF6B00; 
+  --color-platinum: #F9FAFB;  
 }
 
 @layer base {
@@ -18,8 +18,25 @@
   a { @apply text-neutral; }
 }
 
+/* Respect reduced motion globally */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
 @layer utilities {
   /* Hide scrollbar but keep scroll functionality */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Slow spin for global loader */
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+  .animate-spin-slow { animation: spin-slow 1.2s linear infinite; }
 }
+
+/* SweetAlert2 theming */
+.swal2-popup { background: var(--color-platinum); color: var(--color-primary); border-radius: 14px; }
+.swal2-title { color: var(--color-primary); }
+.swal2-confirm { background: var(--color-accent) !important; color: #fff !important; border-radius: 9999px !important; }
+.swal2-cancel { background: #e5e7eb !important; color: var(--color-primary) !important; border-radius: 9999px !important; }
+.swal2-actions { gap: 0.5rem !important; }
