@@ -53,6 +53,8 @@ export default function Hero() {
           <h1 className="text-3xl sm:text-5xl lg:text-6xl md:mt-40 mt-40 font-extrabold leading-tight ">
             {/* lg+: single line */}
             <span className="hidden lg:inline bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">Swasti Pipes & Solutions</span>
+            <span className="mt-5 block sm:hidden bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">Swasti Pipes</span>
+            <span className="block sm:hidden bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">& Solutions</span>
 
             {/* mobile (<sm): split */}
             <span className="mt-5 block sm:hidden bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">Solutions That</span>
