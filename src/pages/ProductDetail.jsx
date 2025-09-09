@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
-import Footer from "../components/Footer";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import api from "../api/api";
 
@@ -20,6 +19,7 @@ export default function ProductDetail() {
   const draggingRef = useRef(false);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const dragStartOffsetRef = useRef({ x: 0, y: 0 });
+  const lbStartX = useRef(null);
 
   useEffect(() => {
     async function load() {
@@ -35,14 +35,14 @@ export default function ProductDetail() {
   }, [slug]);
 
   // autoplay
-  useEffect(() => {
-    if (!product?.images || product.images.length <= 1) return;
-    if (hover) return; // pause on hover
-    const t = setInterval(() => {
-      setIdx((i) => (i + 1) % product.images.length);
-    }, 3000);
-    return () => clearInterval(t);
-  }, [product?.images, hover]);
+  // useEffect(() => {
+  //   if (!product?.images || product.images.length <= 1) return;
+  //   if (hover) return; // pause on hover
+  //   const t = setInterval(() => {
+  //     setIdx((i) => (i + 1) % product.images.length);
+  //   }, 3000);
+  //   return () => clearInterval(t);
+  // }, [product?.images, hover]);
 
   useEffect(() => {
     if (!lightboxOpen) return;
@@ -82,13 +82,11 @@ export default function ProductDetail() {
   }
 
   function openLightbox() {
-    if (window.innerWidth >= 1024) {
-      // enable only for large screens
-      setLightboxOpen(true);
-      setLbZoom(1);
-      setLbTx(0);
-      setLbTy(0);
-    }
+    // Enable lightbox for all screen sizes
+    setLightboxOpen(true);
+    setLbZoom(1);
+    setLbTx(0);
+    setLbTy(0);
   }
   function closeLightbox() {
     setLightboxOpen(false);
@@ -111,111 +109,147 @@ export default function ProductDetail() {
     draggingRef.current = false;
   }
 
+  // Render description: ordered list if author used numbered bullets, else paragraph
+  function renderDescription(desc) {
+    if (!desc) return null;
+    const raw = String(desc);
+    const lines = raw.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+    const numberedCount = lines.filter((l) => /^\d+[\).\-\s]+/.test(l)).length;
+    if (numberedCount >= 2) {
+      return (
+        <ol className="mt-3 list-decimal pl-6 space-y-2 text-primary ">
+          {lines.map((l, i) => (
+            <li key={i}>{l.replace(/^\d+[\).\-\s]+/, "").trim()}</li>
+          ))}
+        </ol>
+      );
+    }
+    return <p className="mt-3 text-primary whitespace-pre-line">{raw}</p>;
+  }
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-platinum overflow-x-hidden">
       <Header />
-      {/* Back Button */}
-      <div className="absolute top-20 left-4 z-10">
+
+      {/* Top-left back button */}
+      <div className="fixed left-4 top-24 z-30">
         <button
-          onClick={() => navigate("/products")}
-          className="flex items-center gap-2 rounded-md bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 shadow"
+          onClick={() => navigate('/products')}
+          className="inline-flex items-center rounded-md bg-attention px-3 py-1.5 text-sm font-medium text-platinum shadow-md hover:bg-accent"
         >
-          ← Back
+          ← Back to Products
         </button>
       </div>
 
       <main className="flex-1">
-        <div className="container mx-auto px-4 py-8 mt-20">
-          <div className="flex flex-col lg:flex-row items-start gap-8 lg:mx-8">
-            {/* Image Section */}
-            <div className="flex-1 w-full max-w-lg mx-auto">
-              <div
-                className="relative overflow-hidden rounded-lg shadow-sm"
-                onMouseEnter={() => setHover(true)}
-                onMouseLeave={() => setHover(false)}
-                onTouchStart={onTouchStart}
-                onTouchEnd={onTouchEnd}
-              >
-                <img
-                  src={current.url}
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/placeholder.svg";
-                  }}
-                  alt={product.name}
-                  onClick={openLightbox}
-                  className="h-56 sm:h-64 md:h-72 lg:h-80 w-full cursor-zoom-in object-cover transition-transform duration-300 ease-out hover:scale-105"
-                />
+        <div className="container mx-auto px-7 md:px-40 py-6 mt-[7.5rem]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left: Media */}
+            <div className="lg:col-span-7">
+              <div className="relative rounded-2xl bg-[#d9dade] text-platinum p-4 sm:p-5 shadow-2xl">
+                <div
+                  className="relative overflow-hidden rounded-xl"
+                  onMouseEnter={() => setHover(true)}
+                  onMouseLeave={() => setHover(false)}
+                  onTouchStart={onTouchStart}
+                  onTouchEnd={onTouchEnd}
+                >
+                  <img
+                    src={current.url}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "/placeholder.svg";
+                    }}
+                    alt={product.name}
+                    onClick={openLightbox}
+                    className="md:h-[40vw] h-[50vw] md:max-h-[360px] max-h-[460px] w-full object-cover rounded-xl cursor-zoom-in transition-transform duration-300 ease-out hover:scale-[1.02] shadow-2xl"
+                  />
+
+                  {images.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); prev(); }}
+                        className="hidden md:inline-flex z-20 absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-neutral font-bold text-primary px-3 py-2 hover:bg-primary hover:text-platinum"
+                      >
+                        ‹
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); next(); }}
+                        className="hidden md:inline-flex z-20 absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-neutral font-bold text-primary px-3 py-2 hover:bg-primary hover:text-platinum"
+                      >
+                        ›
+                      </button>
+                      <div className="absolute bottom-3 right-4 text-xs bg-black/30 px-2 py-1 rounded-full">
+                        {idx + 1}/{images.length}
+                      </div>
+                    </>
+                  )}
+                </div>
+
                 {images.length > 1 && (
-                  <>
-                    <button
-                      onClick={prev}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 rounded bg-black/40 px-2 py-1 text-white"
-                    >
-                      ‹
-                    </button>
-                    <button
-                      onClick={next}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 rounded bg-black/40 px-2 py-1 text-white"
-                    >
-                      ›
-                    </button>
-                  </>
+                  <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                    {images.map((im, i) => (
+                      <button
+                        key={im.publicId || im.url}
+                        onClick={() => setIdx(i)}
+                        className={`h-14 w-16 overflow-hidden rounded border ${
+                          i === idx ? "border-accent" : "border-platinum/30"
+                        }`}
+                      >
+                        <img src={im.url} alt="" className="h-full w-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
                 )}
               </div>
-              {images.length > 1 && (
-                <div className="mt-3 flex flex-wrap gap-2 justify-center">
-                  {images.map((im, i) => (
-                    <button
-                      key={im.publicId || im.url}
-                      onClick={() => setIdx(i)}
-                      className={`h-14 w-16 overflow-hidden rounded border ${
-                        i === idx ? "border-brand" : "border-slate-200"
-                      }`}
-                    >
-                      <img
-                        src={im.url}
-                        alt=""
-                        className="h-full w-full object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
 
-            {/* Product Info */}
-            <div className="w-full lg:w-[380px] border border-neutral rounded-xl px-5 py-8 shadow-sm bg-white">
-              <h1 className="text-xl font-semibold capitalize">
-                {product.name}
-              </h1>
-              <p className="mt-2 text-slate-700">{product.description}</p>
-              <div className="mt-3 flex flex-wrap gap-3">
-                <Link
-                  to="/become-dealer"
-                  className="inline-flex items-center rounded-md bg-accent px-4 py-2 text-white hover:opacity-90"
-                >
-                  Request Bulk Quote
-                </Link>
-              </div>
-              {product.specs && Object.keys(product.specs).length > 0 && (
-                <div className="mt-4">
-                  <h3 className="text-lg font-medium">Specifications</h3>
-                  <ul className="mt-2 list-disc pl-5 space-y-1">
-                    {Object.entries(product.specs).map(([k, v]) => (
-                      <li key={k}>
-                        <span className="font-semibold">{k}:</span> {v}
-                      </li>
-                    ))}
-                  </ul>
+            {/* Right: Details */}
+            <div className="lg:col-span-5">
+              <div className="rounded-2xl border border-neutral bg-white p-5 shadow-xl">
+                <h1 className="text-3xl font-semibold text-primary capitalize tracking-tight">
+                  {product.name}
+                </h1>
+
+                {renderDescription(product.description)}
+
+                {product.specs && Object.keys(product.specs).length > 0 && (
+                  <div className="mt-6">
+                    <h3 className="text-base font-semibold text-primary">Specifications</h3>
+                    <ul className="mt-2 list-disc pl-5 space-y-1 text-primary/90">
+                      {Object.entries(product.specs).map(([k, v]) => (
+                        <li key={k}>
+                          <span className="font-semibold">{k}:</span> {v}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link
+                    to={`/become-dealer?enquiryType=bulk&prefill=${encodeURIComponent(
+                      `Product: ${product.name}` +
+                      (product?.specs && Object.keys(product.specs).length
+                        ? ` | Specs: ${Object.entries(product.specs)
+                            .map(([k, v]) => `${k}: ${v}`)
+                            .join(', ')}`
+                        : '')
+                    )}`}
+                    className="inline-flex items-center rounded-lg bg-accent px-5 py-2.5 text-white hover:opacity-90"
+                  >
+                    Request Bulk Quote
+                  </Link>
+                  
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
       </main>
 
-      {/* Lightbox */}
       {lightboxOpen && (
         <div
           className="fixed inset-0 z-[100] bg-black/70"
@@ -235,27 +269,22 @@ export default function ProductDetail() {
           <div
             className="absolute inset-0 flex items-center justify-center p-3"
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => { lbStartX.current = e.touches?.[0]?.clientX ?? null; }}
+            onTouchEnd={(e) => {
+              if (lbStartX.current == null) return;
+              const dx = e.changedTouches?.[0]?.clientX - lbStartX.current;
+              lbStartX.current = null;
+              if (Math.abs(dx) > 40) { dx > 0 ? prev() : next(); }
+            }}
           >
             <div
-              className="relative w-[92vw] max-w-3xl md:max-w-4xl h-[80vh] max-h-[90vh] rounded-lg bg-black/90 shadow-2xl overflow-hidden"
+              className="relative w-[80vw] max-w-3xl md:max-w-4xl h-[80vh] max-h-[90vh] overflow-hidden"
               onMouseMove={moveDrag}
               onMouseUp={endDrag}
               onMouseLeave={endDrag}
             >
               {images.length > 1 && (
                 <>
-                  <button
-                    onClick={prev}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded bg-white/10 px-3 py-2 text-white hover:bg-white/20"
-                  >
-                    ‹
-                  </button>
-                  <button
-                    onClick={next}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded bg-white/10 px-3 py-2 text-white hover:bg-white/20"
-                  >
-                    ›
-                  </button>
                 </>
               )}
               <div
@@ -268,9 +297,7 @@ export default function ProductDetail() {
                   className="max-h-full max-w-full select-none"
                   style={{
                     transform: `translate(${lbTx}px, ${lbTy}px) scale(${lbZoom})`,
-                    transition: draggingRef.current
-                      ? "none"
-                      : "transform 150ms ease-out",
+                    transition: draggingRef.current ? "none" : "transform 150ms ease-out",
                   }}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
@@ -287,18 +314,16 @@ export default function ProductDetail() {
                       setLbTy(0);
                     }
                   }}
-                  className="rounded bg-white/10 px-3 py-2 text-white hover:bg-white/20"
+                  className="rounded font-bold text-md bg-accent px-2 py-1 text-primary hover:bg-white/20"
                 >
                   -
                 </button>
-                <span className="text-white text-sm min-w-[3rem] text-center">
-                  {Math.round(lbZoom * 100)}%
-                </span>
+                <span className="text-primary bg-neutral text-sm min-w-[3rem] text-center border rounded-xl">{Math.round(lbZoom * 100)}%</span>
                 <button
                   onClick={() => {
                     setLbZoom((z) => Math.min(5, +(z + 0.2).toFixed(2)));
                   }}
-                  className="rounded bg-white/10 px-3 py-2 text-white hover:bg-white/20"
+                  className="rounded font-bold text-md bg-accent px-2 py-1 text-primary hover:bg-white/20"
                 >
                   +
                 </button>
@@ -308,7 +333,7 @@ export default function ProductDetail() {
                     setLbTx(0);
                     setLbTy(0);
                   }}
-                  className="rounded bg-white/10 px-3 py-2 text-white hover:bg-white/20"
+                  className="rounded bg-accent px-2 py-1 text-primary hover:bg-white/20"
                 >
                   Reset
                 </button>
@@ -317,7 +342,8 @@ export default function ProductDetail() {
           </div>
         </div>
       )}
-      <Footer />
+      {/* Minimal footer */}
+      <footer className="bg-primary w-screen h-[4rem] text-platinum flex items-center justify-center font-semibold">Swasti@2025</footer>
     </div>
   );
 }

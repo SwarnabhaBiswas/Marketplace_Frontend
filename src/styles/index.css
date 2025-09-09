@@ -1,8 +1,9 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;600;700&family=Poppins:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Source+Sans+3:wght@400;600;700&family=Work+Sans:wght@400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
 
 :root {
   --color-primary: #051c33;   
@@ -14,8 +15,18 @@
 
 @layer base {
   html, body, #root { @apply overflow-x-hidden; }
-  body { @apply bg-platinum text-primary; }
+  body { @apply bg-platinum text-primary font-body; }
+  h1, h2, h3, h4, h5, h6 { @apply font-heading; }
   a { @apply text-neutral; }
+
+  /* Optional font pair switchers */
+  .pair-manrope-source { @apply font-[inherit]; }
+  .pair-manrope-source h1, .pair-manrope-source h2, .pair-manrope-source h3, .pair-manrope-source h4, .pair-manrope-source h5, .pair-manrope-source h6 { @apply font-heading-manrope; }
+  .pair-manrope-source, .pair-manrope-source body { font-family: theme('fontFamily.body-source'); }
+
+  .pair-poppins-worksans { @apply font-[inherit]; }
+  .pair-poppins-worksans h1, .pair-poppins-worksans h2, .pair-poppins-worksans h3, .pair-poppins-worksans h4, .pair-poppins-worksans h5, .pair-poppins-worksans h6 { @apply font-heading-poppins; }
+  .pair-poppins-worksans, .pair-poppins-worksans body { font-family: theme('fontFamily.body-worksans'); }
 }
 
 /* Respect reduced motion globally */

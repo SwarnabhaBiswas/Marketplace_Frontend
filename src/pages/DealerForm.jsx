@@ -2,14 +2,25 @@ import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import api from '../api/api';
 import Swal from 'sweetalert2';
 
 export default function DealerForm(){
-  const { register, handleSubmit, formState: { errors }, watch } = useForm({ defaultValues: { enquiryType: 'dealer' } });
+  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm({ defaultValues: { enquiryType: 'dealer' } });
+  const [searchParams] = useSearchParams();
   const enquiryType = watch('enquiryType');
   const isBulk = enquiryType === 'bulk';
   const [submitting, setSubmitting] = React.useState(false);
+
+  // Prefill from URL: ?enquiryType=bulk&prefill=...
+  React.useEffect(() => {
+    const typeParam = searchParams.get('enquiryType') || searchParams.get('type');
+    const prefillMsg = searchParams.get('prefill') || searchParams.get('message') || '';
+    if (typeParam === 'bulk') setValue('enquiryType', 'bulk');
+    if (prefillMsg) setValue('message', prefillMsg);
+  }, [searchParams, setValue]);
+
   async function onSubmit(data){
     try{
       setSubmitting(true);

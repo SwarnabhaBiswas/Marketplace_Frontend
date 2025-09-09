@@ -33,7 +33,7 @@ export default function GlobalLoader() {
     <div
       aria-live="polite"
       aria-busy="true"
-      className="pointer-events-none fixed inset-0 z-[1000] grid place-items-center"
+      className="fixed inset-0 z-[1000] grid place-items-center"
     >
       {/* Background Blur Overlay */}
       <div className="absolute inset-0 bg-black/30 backdrop-blur-md" />

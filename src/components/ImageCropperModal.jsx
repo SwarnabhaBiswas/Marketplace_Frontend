@@ -31,7 +31,7 @@ async function getCroppedBlob(imageSrc, cropPixels, mimeType = 'image/jpeg', qua
   });
 }
 
-export default function ImageCropperModal({ src, aspect = 1, onCancel, onCropped, title = 'Crop image' }) {
+export default function ImageCropperModal({ src, onCancel,aspect, onCropped, title = 'Crop image', busy = false }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedPixels, setCroppedPixels] = useState(null);
@@ -51,7 +51,7 @@ export default function ImageCropperModal({ src, aspect = 1, onCancel, onCropped
       <div className="w-[720px] max-w-[95vw] rounded-lg bg-white p-4 shadow-xl">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-lg font-medium">{title}</h3>
-          <button onClick={onCancel} className="rounded-md border px-2 py-1 text-sm">✕</button>
+            <button onClick={onCancel} className="rounded-md border px-2 py-1 text-sm" disabled={busy}>✕</button>
         </div>
         <div className="relative h-[60vh] min-h-[360px] w-full bg-slate-100 overflow-hidden rounded">
           <Cropper
@@ -72,8 +72,17 @@ export default function ImageCropperModal({ src, aspect = 1, onCancel, onCropped
             <input type="range" min={1} max={3} step={0.05} value={zoom} onChange={(e)=>setZoom(parseFloat(e.target.value))} />
           </div>
           <div className="flex gap-2">
-            <button onClick={onCancel} className="rounded-md border px-3 py-2 text-sm">Cancel</button>
-            <button onClick={doConfirm} className="rounded-md bg-brand px-3 py-2 text-sm text-white">Use Image</button>
+            <button onClick={onCancel} className="rounded-md border px-3 py-2 text-sm" disabled={busy}>Cancel</button>
+            <button onClick={doConfirm} disabled={busy} className={`rounded-md px-3 py-2 text-sm text-white ${busy ? 'bg-brand cursor-not-allowed' : 'bg-brand'}`}>
+              {busy ? (
+                <span className="inline-flex items-center gap-2">
+                  <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/80 border-t-transparent"></span>
+                  Uploading…
+                </span>
+              ) : (
+                'Use Image'
+              )}
+            </button>
           </div>
         </div>
       </div>
