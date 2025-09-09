@@ -237,6 +237,16 @@ export default function AdminDashboard() {
                       <h3 className="text-lg font-semibold">{d.companyName}</h3>
                       <p className="text-sm text-gray-700">{d.email}</p>
                       <p className="text-sm text-gray-700">Ph: {d.phone}</p>
+                      <div className="mt-1 text-sm text-gray-800">
+                        <span className="font-semibold">Purpose:</span>{' '}
+                        {d.enquiryType === 'bulk' ? (
+                          <>
+                            Buy in bulk{d.volumeBand ? ` — Qty: ${d.volumeBand}` : ''}{d.message ? ` — ${d.message}` : ''}
+                          </>
+                        ) : (
+                          'To be a dealer'
+                        )}
+                      </div>
                       {d.message && <p className="mt-1">{d.message}</p>}
                     </div>
 
@@ -288,7 +298,7 @@ export default function AdminDashboard() {
         {/* PRODUCT FORM MODAL */}
         {editing && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-            <div className="w-[640px] max-w-[92vw] rounded-lg bg-white p-5 shadow-xl">
+            <div className="w-[640px] max-w-[92vw] max-h-[85vh] overflow-y-auto rounded-lg bg-white p-5 shadow-xl">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-lg font-medium">
                   {editing._id ? "Edit Product" : "New Product"}
