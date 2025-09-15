@@ -20,7 +20,7 @@ export default function ContactForm(){
     setSubmitting(false);
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)} aria-busy={submitting ? 'true' : 'false'} className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-200 px-3 py-5 md:px-6 md:py-10">
+    <form onSubmit={handleSubmit(onSubmit)} aria-busy={submitting ? 'true' : 'false'} className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gradient-to-br from-[#E6F2FF] to-[#D4EEFF] px-3 py-5 md:px-6 md:py-10">
       <input {...register('name', { required: 'Name is required' })} placeholder="What’s your name? *" className="w-full rounded-md border border-slate-300 px-3 py-3 outline-none focus:ring-2 focus:ring-brand" />
       <input {...register('phone', { required: 'Phone is required' })} placeholder="Mobile number *" className="w-full rounded-md border border-slate-300 px-3 py-3 outline-none focus:ring-2 focus:ring-brand" />
       <input {...register('email', { required: 'Email is required', pattern: { value: /[^\s@]+@[^\s@]+\.[^\s@]+/, message: 'Invalid email' } })} placeholder="What email ID can we reach out to? *" className="w-full rounded-md border border-slate-300 px-3 py-3 outline-none focus:ring-2 focus:ring-brand" />

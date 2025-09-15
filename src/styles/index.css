@@ -14,10 +14,27 @@
 }
 
 @layer base {
-  html, body, #root { @apply overflow-x-hidden; }
-  body { @apply bg-platinum text-primary font-body; }
+  html {
+    @apply overflow-x-hidden;
+    scroll-behavior: smooth;
+    scroll-padding-top: 4rem; /* Account for fixed header */
+  }
+  
+  body, #root { 
+    @apply overflow-x-hidden; 
+  }
+  
+  body { 
+    @apply bg-platinum text-primary font-body;
+    /* Smooth momentum scrolling for iOS */
+    -webkit-overflow-scrolling: touch;
+  }
+  
   h1, h2, h3, h4, h5, h6 { @apply font-heading; }
   a { @apply text-neutral; }
+
+  /* Global placeholder color for all forms */
+  input::placeholder, textarea::placeholder, select::placeholder { @apply text-slate-800 opacity-100; }
 
   /* Optional font pair switchers */
   .pair-manrope-source { @apply font-[inherit]; }
@@ -36,13 +53,136 @@
 }
 
 @layer utilities {
+  /* Premium Scrollbar Design */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: rgba(249, 250, 251, 0.6);
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-attention));
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--color-attention), var(--color-accent));
+    transform: scale(1.1);
+  }
+  
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  
+  /* Firefox scrollbar */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-accent) rgba(249, 250, 251, 0.6);
+  }
+  
   /* Hide scrollbar but keep scroll functionality */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  
+  /* Smooth scroll utilities */
+  .scroll-smooth { scroll-behavior: smooth; }
+  .scroll-auto { scroll-behavior: auto; }
+  
+  /* Section visibility improvements */
+  .section-padding {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  
+  .section-spacing {
+    margin-bottom: 2rem;
+  }
+  
+  /* Enhanced smooth scrolling with better easing */
+  @supports (scroll-behavior: smooth) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  
+  /* Smooth transitions for all interactive elements */
+  * {
+    transition-property: opacity, transform, background-color, border-color, color, fill, stroke;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Prevent layout shifts during smooth scrolling */
+  .scroll-container {
+    will-change: scroll-position;
+    transform: translateZ(0);
+  }
+  
+  /* Optimized rendering for smooth animations */
+  .smooth-transform {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Scroll performance optimizations */
+  .scroll-performance {
+    contain: layout style paint;
+    will-change: scroll-position;
+  }
+  
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto !important;
+    }
+    
+    * {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+  
+  /* Smooth scroll snap for better section navigation */
+  .scroll-snap-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  
+  /* Container with scroll snap */
+  .scroll-snap-container {
+    scroll-snap-type: y mandatory;
+  }
 
   /* Slow spin for global loader */
   @keyframes spin-slow { to { transform: rotate(360deg); } }
   .animate-spin-slow { animation: spin-slow 1.2s linear infinite; }
+
+  /* Wave overlay animations */
+  @keyframes wave-dash {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -800; }
+  }
+  @keyframes wave-sway {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+  }
+  .wave-line { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 8 10; }
+  .wave-dash-slow { animation: wave-dash 18s linear infinite; }
+  .wave-dash-med { animation: wave-dash 12s linear infinite; }
+  .wave-dash-fast { animation: wave-dash 8s linear infinite; }
+  .wave-sway-slow { animation: wave-sway 6s ease-in-out infinite; }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .wave-dash-slow, .wave-dash-med, .wave-dash-fast, .wave-sway-slow { animation: none !important; }
+  }
 }
 
 /* SweetAlert2 theming */

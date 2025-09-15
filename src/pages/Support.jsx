@@ -88,18 +88,8 @@ export default function Support() {
                       Interested in Swasti products? Pick up the phone to chat
                       with a member of our sales team.
                     </p>
-                    <div className="mt-4">
-                      <a
-                        href="tel:+919876543210"
-                        className="font-medium underline"
-                      >
-                        +91 98765 43210
-                      </a>
-                    </div>
-                    <div className="mt-2">
-                      <a href="#" className="text-brand underline">
-                        View all global numbers
-                      </a>
+                    <div className="mt-4 ">
+                      <a href="tel:02269645648" className="text-primary">Call 022-69645648</a>
                     </div>
                   </div>
                 </div>
@@ -156,43 +146,4 @@ export default function Support() {
       <Footer />
     </div>
   );
-}
-{
-  /*
-  Swasti Pipes & Fittings → (classic, but too narrow — only plumbing)
-
-Swasti Pipes & Components → (broad, works for plumbing + electrical)
-
-Swasti Pipes & Systems → (sounds premium, covers all engineered solutions)
-
-Swasti Pipes & Solutions → (modern, wide umbrella term, corporate feel)
-
-Swasti Pipes & Products → (simple, clear, but less premium)
-
-Swasti Pipes & Hardware → (covers both plumbing + electrical, practical)
-
-Swasti Pipes & Essentials → (utility-focused, catchy, slightly modern)
-
-Swasti Pipes & Technologies → (premium, future-ready branding)
-
-Swasti Pipes & Utilities → (clear, covers water + power products)
-
-Swasti Pipes & Systems → (industrial, premium, works really well for both sectors)
-  {“Power. Flow. Trust.”
-
-                “Built for Every Connection.”
-
-                “Strength in Every System.”
-
-                “From Water to Power, We’ve Got You Covered.”
-
-                “Solutions That Last.”
-
-                “Connecting Reliability with Innovation.”
-
-                “Your Complete Infrastructure Partner.”
-
-                “End-to-End Solutions for Everyday Needs.”
-
-                “Where Strength Meets Reliability.”} */
 }

@@ -43,42 +43,50 @@ export default function Hero() {
   return (
     <section className="relative bg-neutral text-platinum">
       <div
-        className="relative h-[70vh] sm:h-[80vh] lg:h-[95vh] overflow-hidden "
+        className="relative h-[70vh] sm:h-[80vh] lg:h-[95vh] overflow-hidden"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
         {/* Overlay headline & description */}
-        <div className="pointer-events-none absolute left-4 right-4 top-8 sm:left-8 sm:top-14 lg:left-16 lg:top-20 z-10 max-w-4xl">
-          {/* Main Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl md:mt-40 mt-40 font-extrabold leading-tight ">
-            {/* lg+: single line */}
-            <span className="hidden lg:inline bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">Swasti Pipes & Solutions</span>
-            <span className="mt-5 block sm:hidden bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">Swasti Pipes</span>
-            <span className="block sm:hidden bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">& Solutions</span>
+        <div className="pointer-events-none absolute left-4 right-4 top-16 sm:left-8 sm:top-20 lg:left-20 lg:top-28 z-10 max-w-4xl">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl md:mt-40 mt-40 font-extrabold leading-tight">
+            {/* lg+: Swasti big, Conduit Pipes & Accessories smaller */}
+            <span className="hidden lg:block bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-7xl">
+              Swasti
+            </span>
+            <span className="hidden lg:block bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-5xl mt-3">
+              Conduit Pipes & Accessories
+            </span>
 
-            {/* mobile (<sm): split */}
-            <span className="mt-5 block sm:hidden bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">Solutions That</span>
-            <span className="block sm:hidden bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">Last.</span>
+            {/* Mobile (<sm): Swasti big, Conduit Pipes & Accessories split */}
+            <span className="block sm:hidden bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-5xl">
+              Swasti
+            </span>
+            <span className="block sm:hidden bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-xl mt-2">
+              Conduit Pipes &
+            </span>
+            <span className="block sm:hidden bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-xl">
+              Accessories
+            </span>
 
             {/* md only */}
-            <span className="hidden md:block lg:hidden bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">Solutions That</span>
-            <span className="hidden md:block lg:hidden bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent">Last.</span>
-            <span className="hidden md:hidden lg:block bg-gradient-to-b from-[#aad2fa] to-[#020e1aff] bg-clip-text text-transparent mt-5">Solutions That Last..</span>
+            <span className="hidden md:block lg:hidden bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-6xl">
+              Swasti
+            </span>
+            <span className="hidden md:block lg:hidden bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-2xl mt-2">
+              Conduit Pipes &
+            </span>
+            <span className="hidden md:block lg:hidden bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-2xl">
+              Accessories
+            </span>
           </h1>
 
           {/* Sub-text */}
-          <p className="flex flex-col mt-5 md:mt-5 md:ml-5 text-sm sm:text-lg lg:text-xl text-primary italic lg:mt-7 lg:ml-20">
-            {/* Mobile split */}
-            <span className="md:hidden lg:hidden">
-              Long-lasting. Leak-proof. Trusted
+          <p className="flex flex-col mt-5 md:mt-5 md:ml-5 text-sm sm:text-lg lg:text-xl text-primary italic lg:mt-8 lg:ml-10">
+            <span>
+              your safety, our priority
             </span>
-            <span className="md:hidden lg:hidden">for every connection.</span>
-
-            {/* lg full line */}
-            <span className="hidden lg:block">
-              Long-lasting. Leak-proof. Trusted for every connection.
-            </span>
-
+            
             {/* CTA */}
             <Link
               to="/about"
@@ -93,9 +101,7 @@ export default function Hero() {
         <div
           className="absolute inset-0 flex transition-transform duration-1000 ease-out will-change-transform"
           style={{
-            transform: `translateX(-${
-              (idx * 100) / heroImages.length
-            }%)`,
+            transform: `translateX(-${(idx * 100) / heroImages.length}%)`,
             width: `${heroImages.length * 100}%`,
           }}
         >
@@ -115,16 +121,54 @@ export default function Hero() {
                     "linear-gradient(180deg, var(--color-platinum, #F9FAFB) 0%, var(--color-neutral, #d9d9d9ff) 100%)",
                 }}
               />
-              <img
-                src={src}
-                alt="Hero"
-                loading={i === 0 ? "eager" : "lazy"}
-                fetchpriority={i === 0 ? "high" : "low"}
-                decoding="async"
-                sizes="100vw"
-                onLoad={() => handleLoad(i)}
-                className="h-full w-full object-cover transition-transform duration-300 ease-out md:hover:scale-110 active:scale-95 select-none"
-              />
+
+              {/* Hero1 and Hero2: use portrait vs landscape swap */}
+              {i === 0 ? (
+                <picture>
+                  <source
+                    srcSet="/hero1_p.png"
+                    media="(orientation: portrait)"
+                  />
+                  <img
+                    src="/hero1 (1).png"
+                    alt="Hero 1"
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                    sizes="100vw"
+                    onLoad={() => handleLoad(i)}
+                    className="h-full w-full object-cover transition-transform duration-300 ease-out md:hover:scale-110 active:scale-95 select-none"
+                  />
+                </picture>
+              ) : i === 1 ? (
+                <picture>
+                  <source
+                    srcSet="/hero2.png"
+                    media="(orientation: portrait)"
+                  />
+                  <img
+                    src="/hero2.png"
+                    alt="Hero 2"
+                    loading="lazy"
+                    fetchpriority="low"
+                    decoding="async"
+                    sizes="100vw"
+                    onLoad={() => handleLoad(i)}
+                    className="h-full w-full object-cover transition-transform duration-300 ease-out md:hover:scale-110 active:scale-95 select-none"
+                  />
+                </picture>
+              ) : (
+                <img
+                  src={src}
+                  alt="Hero"
+                  loading="lazy"
+                  fetchpriority="low"
+                  decoding="async"
+                  sizes="100vw"
+                  onLoad={() => handleLoad(i)}
+                  className="h-full w-full object-cover transition-transform duration-300 ease-out md:hover:scale-110 active:scale-95 select-none"
+                />
+              )}
             </div>
           ))}
         </div>
@@ -133,14 +177,14 @@ export default function Hero() {
         <button
           aria-label="Prev"
           onClick={prev}
-          className="hidden sm:block absolute left-3 top-1/2 -translate-y-1/2 rounded bg-black/30 px-3 py-2 text-white md:hover:bg-black/40"
+          className="hidden sm:block absolute left-3 top-1/2 -translate-y-1/2 rounded bg-black/30 px-2 py-2 text-white md:hover:bg-black/40"
         >
           ‹
         </button>
         <button
           aria-label="Next"
           onClick={next}
-          className="hidden sm:block absolute right-3 top-1/2 -translate-y-1/2 rounded bg-black/30 px-3 py-2 text-white md:hover:bg-black/40"
+          className="hidden sm:block absolute right-3 top-1/2 -translate-y-1/2 rounded bg-black/30 px-2 py-2 text-white md:hover:bg-black/40"
         >
           ›
         </button>

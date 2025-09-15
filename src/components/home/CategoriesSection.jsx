@@ -12,6 +12,7 @@ export default function CategoriesSection() {
     scrollLeft: 0,
     pointerType: "mouse",
   });
+
   useEffect(() => {
     (async () => {
       try {
@@ -20,23 +21,29 @@ export default function CategoriesSection() {
       } catch (e) {}
     })();
   }, []);
+
   useEffect(() => {
     const el = catRef.current;
     if (el) el.scrollTo({ left: 0, behavior: "auto" });
   }, [categories.length]);
+
   const catsToShow = categories.map((c) => c.name);
+
+  // Ensure all keys are lowercase for case-insensitive comparison
   const catImgMap = {
-    pipes: "/cat-pipes.svg",
+    "pipes": "/cat-pvc-conduit.svg",
     "pipe & fittings": "/cat-fittings.svg",
     fittings: "/cat-fittings.svg",
     accessories: "/cat-accessories.svg",
     conduits: "/cat-conduits.svg",
     trunking: "/cat-trunking.svg",
   };
+
   function getCatImg(name) {
     const key = (name || "").toLowerCase();
     return catImgMap[key] || "/cat-default.svg";
   }
+
   function onCatPointerDown(e) {
     const el = catRef.current;
     if (!el) return;
@@ -52,6 +59,7 @@ export default function CategoriesSection() {
       pointerType: "touch",
     };
   }
+
   function onCatPointerMove(e) {
     const el = catRef.current;
     if (!el) return;
@@ -71,6 +79,7 @@ export default function CategoriesSection() {
     }
     el.scrollLeft = d.scrollLeft - dx;
   }
+
   function onCatPointerUp(e) {
     const el = catRef.current;
     if (!el) return;
@@ -80,6 +89,7 @@ export default function CategoriesSection() {
       el.releasePointerCapture(e.pointerId);
     } catch {}
   }
+
   function onCatWheel(e) {
     const el = catRef.current;
     if (!el) return;
@@ -88,6 +98,7 @@ export default function CategoriesSection() {
       el.scrollBy({ left: e.deltaY, behavior: "auto" });
     }
   }
+
   return (
     <section
       className="relative bg-primary text-platinum"
@@ -110,6 +121,7 @@ export default function CategoriesSection() {
               Discover all Products
             </Link>
           </div>
+
           <div className="lg:col-span-2">
             <div className="relative pb-12">
               <div
@@ -137,7 +149,7 @@ export default function CategoriesSection() {
                           loading="lazy"
                           decoding="async"
                           sizes="(max-width: 640px) 260px, (max-width: 768px) 300px, 320px"
-                          className="h-full w-full object-cover transition-transform duration-300 ease-out hover:text-[2rem]  md:group-hover:scale-110 active:scale-95"
+                          className="h-full w-full object-cover transition-transform duration-300 ease-out md:group-hover:scale-110 active:scale-95"
                         />
                       </div>
                       <div className="mt-2 text-base sm:text-lg font-medium text-white/90">
@@ -145,6 +157,7 @@ export default function CategoriesSection() {
                       </div>
                     </Link>
                   ))}
+
                   <Link
                     to="/products"
                     className="group w-[240px] sm:w-[280px] md:w-[320px] flex-shrink-0 snap-start"
@@ -170,6 +183,7 @@ export default function CategoriesSection() {
                   </Link>
                 </div>
               </div>
+
               <div className="pointer-events-none absolute bottom-2 right-2 sm:bottom-0 sm:right-0 mb-1 flex gap-2">
                 <button
                   aria-label="Prev"

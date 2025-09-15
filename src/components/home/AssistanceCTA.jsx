@@ -13,7 +13,7 @@ export default function AssistanceCTA(){
         </div>
         <m.div className="flex gap-3" variants={fadeSlideUp} custom={0.18}>
           <Link to="/support" className="rounded-md border px-4 py-2 bg-neutral text-primary hover:bg-white ">Contact Us</Link>
-          <Link to="/become-dealer" className="rounded-md bg-primary px-4 py-2 text-white hover:bg-[#0d4175ff]">Business Enquiry</Link>
+          <Link to="/become-dealer" className="rounded-md bg-accent px-4 py-2 text-white hover:bg-[#0d4175ff]">Business Enquiry</Link>
         </m.div>
       </div>
     </m.section>
