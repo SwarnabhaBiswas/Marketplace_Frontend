@@ -130,7 +130,7 @@ export default function Hero() {
                     media="(orientation: portrait)"
                   />
                   <img
-                    src="/hero1 (1).png"
+                    src="/hero1.png"
                     alt="Hero 1"
                     loading="eager"
                     fetchpriority="high"
@@ -140,15 +140,15 @@ export default function Hero() {
                     className="h-full w-full object-cover transition-transform duration-300 ease-out md:hover:scale-110 active:scale-95 select-none"
                   />
                 </picture>
-              ) : i === 1 ? (
+              ) : i === 2 ? (
                 <picture>
                   <source
-                    srcSet="/hero2.png"
+                    srcSet="/hero3_p.png"
                     media="(orientation: portrait)"
                   />
                   <img
-                    src="/hero2.png"
-                    alt="Hero 2"
+                    src="/hero3.png"
+                    alt="Hero 3"
                     loading="lazy"
                     fetchpriority="low"
                     decoding="async"

@@ -13,14 +13,18 @@ export default function CategoriesSection() {
     pointerType: "mouse",
   });
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await api.get("/categories");
-        setCategories(res.data.data || []);
-      } catch (e) {}
-    })();
-  }, []);
+useEffect(() => {
+  (async () => {
+    try {
+      const res = await api.get("/categories");
+      const cats = res.data.data || [];
+      // Sort Z -> A (case-insensitive)
+      cats.sort((a, b) => b.name.localeCompare(a.name, undefined, { sensitivity: "base" }));
+      setCategories(cats);
+    } catch (e) {}
+  })();
+}, []);
+
 
   useEffect(() => {
     const el = catRef.current;
@@ -29,21 +33,32 @@ export default function CategoriesSection() {
 
   const catsToShow = categories.map((c) => c.name);
 
-  // Ensure all keys are lowercase for case-insensitive comparison
+  // Map by slug to avoid whitespace/casing/punctuation mismatches (same logic as backend)
+  function slugifyLocal(name) {
+    return String(name)
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  }
+
   const catImgMap = {
-    "pipes": "/cat-pvc-conduit.svg",
-    "pipe & fittings": "/cat-fittings.svg",
-    fittings: "/cat-fittings.svg",
-    accessories: "/cat-accessories.svg",
-    conduits: "/cat-conduits.svg",
-    trunking: "/cat-trunking.svg",
+    'rigid-pvc-conduit': '/cat-rigid-pvc-conduit.png',
+    'circular-box': '/cat-circular-box.png',
+    'pvc-conduit-accessories': '/cat-pvc-conduit-accessories.png',
+    'modular-box': '/cat-modular-box.png',
+    'mcb-box': '/cat-mcb-box.png',
+    'mcb-distribution-box': '/cat-mcb-box.png',
+    'fan-box':'/cat-fan-box.png',
+    'fan-accessories':'/cat-fan-accessories.png',
+    'conceal-box':'/cat-conceal-box.png'
   };
 
   function getCatImg(name) {
-    const key = (name || "").toLowerCase();
-    return catImgMap[key] || "/cat-default.svg";
+    const key = slugifyLocal(name || '');
+    return catImgMap[key] || '/cat-default.svg';
   }
-
+  
   function onCatPointerDown(e) {
     const el = catRef.current;
     if (!el) return;
@@ -136,7 +151,7 @@ export default function CategoriesSection() {
                 style={{ WebkitOverflowScrolling: "touch" }}
               >
                 <div className="flex gap-5 pr-10 justify-start">
-                  {catsToShow.slice(0, 12).map((c) => (
+                  {catsToShow.slice(0, 10).map((c) => (
                     <Link
                       key={c}
                       to={`/products?category=${encodeURIComponent(c)}`}
@@ -164,7 +179,7 @@ export default function CategoriesSection() {
                   >
                     <div className="relative h-[170px] sm:h-[200px] md:h-[220px] overflow-hidden rounded-xl bg-white shadow-lg">
                       <img
-                        src="/category-see-all.svg"
+                        src="/discover-all.png"
                         alt="Explore all categories"
                         loading="lazy"
                         decoding="async"

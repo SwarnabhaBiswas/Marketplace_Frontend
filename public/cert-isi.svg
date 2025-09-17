@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
-  <rect width="120" height="120" rx="14" fill="#ffffff" stroke="#FF6B00" stroke-width="4"/>
-  <rect x="20" y="20" width="80" height="80" rx="8" fill="none" stroke="#FF6B00" stroke-width="6"/>
-  <path d="M40 60 h40" stroke="#FF6B00" stroke-width="6" stroke-linecap="round"/>
-  <path d="M60 40 v40" stroke="#FF6B00" stroke-width="6" stroke-linecap="round"/>
-  <text x="60" y="110" font-family="Arial, sans-serif" font-size="10" fill="#FF6B00" text-anchor="middle">ISI</text>
-</svg>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390.94 300"><defs><style>.cls-1{fill:#fff;}</style></defs><title>ISI Mark</title><path class="cls-1" d="M350.25,300H40.69A40.73,40.73,0,0,1,0,259.31V40.69A40.73,40.73,0,0,1,40.69,0H350.25a40.74,40.74,0,0,1,40.69,40.69V259.31A40.74,40.74,0,0,1,350.25,300ZM40.69,25.33A15.38,15.38,0,0,0,25.33,40.69V259.31a15.38,15.38,0,0,0,15.36,15.36H350.25a15.37,15.37,0,0,0,15.35-15.36V40.69a15.37,15.37,0,0,0-15.35-15.36Z"/><path class="cls-1" d="M241.42,255.16H58.64A12.66,12.66,0,0,1,46,242.51h0V190.92H71.26v38.91H228.72V163.4H149.86a12.66,12.66,0,0,1-12.66-12.66h0V57.48a12.66,12.66,0,0,1,12.66-12.67H332.3A12.66,12.66,0,0,1,345,57.48V107H319.62V70.14H162.54v67.91h78.88a12.69,12.69,0,0,1,12.69,12.67V242.5a12.68,12.68,0,0,1-12.69,12.66Z"/><rect class="cls-1" x="91.39" y="53.87" width="25.33" height="162.85"/><rect class="cls-1" x="274.26" y="83.15" width="25.33" height="171.82"/></svg>

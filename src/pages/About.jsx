@@ -33,8 +33,8 @@ export default function About(){
             <m.h2 className="text-2xl font-semibold" variants={fadeSlideUp}>Company Profile</m.h2>
             <m.p className="mt-2 text-slate-700" variants={fadeSlideUp} custom={0.08}>
               With a strong manufacturing backbone and a pan-India network, Swasti delivers uPVC conduits,
-              fittings and accessories that meet stringent quality benchmarks. Our team brings decades of
-              product and process expertise to serve contractors, distributors and OEMs.
+              fittings and MS accessories that meet stringent quality benchmarks. Our team brings decades of
+              product and process expertise to serve contractors & dealers.
             </m.p>
           </m.section>
 
@@ -45,7 +45,7 @@ export default function About(){
                 {/* Left: supporting image */}
                 <m.div className="relative" variants={fadeSlideUp}>
                   <img
-                    src="/plant-facility.jpg"
+                    src="/why-us.jpg"
                     alt="Swasti operations"
                     loading="lazy"
                     decoding="async"
@@ -123,7 +123,7 @@ export default function About(){
                     loading="lazy"
                     decoding="async"
                     className="h-full w-full object-cover"
-                    onError={(e)=>{ e.currentTarget.onerror=null; e.currentTarget.src='/founder.svg'; }}
+                    onError={(e)=>{ e.currentTarget.onerror=null; e.currentTarget.src='/quality.jpg'; }}
                   />
                 </m.div>
               </div>
@@ -177,11 +177,11 @@ export default function About(){
             <div className="rounded-2xl bg-white shadow-xl ring-1 ring-slate-100 p-5 sm:p-6">
               <div className="flex flex-col sm:flex-row items-center gap-5">
                 <m.img
-                  src="/founder.svg"
+                  src="/founder.jpg"
                   alt="Founder"
                   loading="lazy"
                   decoding="async"
-                  className="h-28 w-28 rounded-xl object-cover"
+                  className="h-30 w-28 rounded-xl object-cover"
                   variants={fadeSlideUp}
                 />
                 <m.div variants={fadeSlideUp} custom={0.08} className="text-center sm:text-left">

@@ -6,7 +6,7 @@ import { fadeSlideUp } from "../lib/motion";
 
 export default function Support() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col ">
       <Header />
       <main className="flex-1">
         {/* Hero */}
@@ -43,11 +43,11 @@ export default function Support() {
                 variants={fadeSlideUp}
               >
                 <img
-                  src="/support-illustration.svg"
+                  src="/support.jpg"
                   alt="Support illustration"
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-auto"
+                  className="w-40 h-40 md:w-80 md:h-80"
                 />
               </m.div>
             </div>
@@ -90,6 +90,8 @@ export default function Support() {
                     </p>
                     <div className="mt-4 ">
                       <a href="tel:02269645648" className="text-primary">Call 022-69645648</a>
+                      <p className="mt-3">Email- <a href="https://mail.google.com/mail/?view=cm&fs=1&to=support@swastipipes.com" target="_blank" className="text-primary  ">support@swastipipes.com</a></p>
+
                     </div>
                   </div>
                 </div>

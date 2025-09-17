@@ -5,7 +5,7 @@ import { fadeSlideUp } from '../../lib/motion';
 export default function TrustedPartner() {
   return (
     <m.section
-      className="container mx-auto px-4 py-12 max-w-6xl md:bg-attention border rounded-xl"
+      className="container mx-auto px-10 md:px-4 py-12 max-w-6xl md:bg-primary border rounded-xl"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
@@ -46,19 +46,19 @@ export default function TrustedPartner() {
             {/* ISI */}
             <m.div className="flex flex-col items-center text-center" variants={fadeSlideUp} custom={0.1}>
               <img src="/cert-isi.svg" alt="ISI Accredited" className="h-20 w-auto" />
-              <span className="mt-2 text-sm font-medium text-primary">ISI Accredited</span>
+              <span className="mt-2 text-sm font-medium text-platinum">ISI Accredited</span>
             </m.div>
 
             {/* ISO */}
             <m.div className="flex flex-col items-center text-center" variants={fadeSlideUp} custom={0.14}>
               <img src="/cert-iso.svg" alt="ISO 9001:2015 Certified" className="h-20 w-auto" />
-              <span className="mt-2 text-sm font-medium text-primary">ISO 9001:2015 Certified</span>
+              <span className="mt-2 text-sm font-medium text-platinum">ISO 9001:2015 Certified</span>
             </m.div>
 
             {/* BSCIC / JAS-ANZ */}
             <m.div className="col-span-2 flex flex-col items-center text-center" variants={fadeSlideUp} custom={0.18}>
-              <img src="/bscic-jasanz.svg" alt="BSCIC / JAS-ANZ" className="h-16 w-auto" />
-              <span className="sr-only">BSCIC / JAS-ANZ</span>
+              <img src="/cert.png" alt="BSCIC / JAS-ANZ" className="h-16 w-auto" />
+              <span className="mt-2 text-sm font-medium text-platinum">ISO 9001 - 2008 Registered Company</span>
             </m.div>
           </div>
         </div>

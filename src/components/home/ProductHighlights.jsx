@@ -91,8 +91,8 @@ const conduitsFeatures = [
 
 const msAccessories = [
   {
-    icon: <SwitchIcon />,
-    title: "Fit to any kind of switch",
+    icon: <HeavyDutyIcon />,
+    title: "Heavy duty",
     delay: 0.1
   },
   {
@@ -134,7 +134,7 @@ export default function ProductHighlights() {
               <div className="w-24 h-1 bg-accent mx-auto"></div>
             </m.div>
 
-            <div className="grid grid-cols-1 gap-8 flex-1">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-1 md:gap-8 flex-1">
               {conduitsFeatures.map((feature, index) => (
                 <m.div
                   key={index}
@@ -147,7 +147,7 @@ export default function ProductHighlights() {
                       {feature.icon}
                     </div>
                   </div>
-                  <p className="text-gray-700 text-base md:text-lg font-medium leading-relaxed px-2">
+                  <p className="text-gray-700 text-sm sm:text-base md:text-lg font-medium leading-relaxed px-2">
                     {feature.title}
                   </p>
                 </m.div>
@@ -164,7 +164,7 @@ export default function ProductHighlights() {
               <div className="w-24 h-1 bg-attention mx-auto"></div>
             </m.div>
 
-            <div className="grid grid-cols-1 gap-8 flex-1">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-1 md:gap-8 flex-1">
               {msAccessories.map((accessory, index) => (
                 <m.div
                   key={index}
@@ -177,7 +177,7 @@ export default function ProductHighlights() {
                       {accessory.icon}
                     </div>
                   </div>
-                  <p className="text-gray-700 text-base md:text-lg font-medium leading-relaxed px-2">
+                  <p className="text-gray-700 text-sm sm:text-base md:text-lg font-medium leading-relaxed px-2">
                     {accessory.title}
                   </p>
                 </m.div>
