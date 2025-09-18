@@ -13,6 +13,7 @@ import './styles/index.css';
 import { MotionProvider } from './lib/motion';
 import GlobalLoader from './components/GlobalLoader';
 import { beginRoute, endRoute } from './lib/loading';
+import { initializeSmoothScrolling } from './lib/smoothScroll';
 import WhatsAppFAB from './components/WhatsAppFAB';
 
 function ScrollToHash() {
@@ -35,6 +36,12 @@ function RouteSpinner() {
     const t = setTimeout(() => endRoute(), 220);
     return () => clearTimeout(t);
   }, [location]);
+  
+  // Initialize smooth scrolling when component mounts
+  React.useEffect(() => {
+    initializeSmoothScrolling();
+  }, []);
+  
   return null;
 }
 

@@ -43,7 +43,8 @@ export default function AdminDashboard() {
     setProdLoading(true);
     try {
       const res = await api.get("/products", {
-        params: { page: nextPage, limit: PROD_LIMIT },
+        params: { page: nextPage, limit: PROD_LIMIT, _: Date.now() },
+        headers: { 'Cache-Control': 'no-cache' },
       });
       const data = res.data?.data || [];
       const total = res.data?.total || 0;
@@ -85,7 +86,7 @@ export default function AdminDashboard() {
   return (
     <>
       <Header />
-      <div className="container mx-auto px-3 py-6 mt-16">
+      <div className="container mx-auto px-3 py-6 mt-20">
         {/* Title + Tabs */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
           <h1 className="text-2xl font-semibold mb-3 md:mb-0">Admin Dashboard</h1>

@@ -14,7 +14,7 @@ export default function FounderSection(){
             
           </div>
           <div className="relative">
-            <img src="/founder.svg" alt="Founder" loading="lazy" decoding="async" className="h-full w-full object-cover" />
+            <img src="/founder.png" alt="Founder" loading="lazy" decoding="async" className="h-full w-full object-cover" />
           </div>
         </div>
       </div>

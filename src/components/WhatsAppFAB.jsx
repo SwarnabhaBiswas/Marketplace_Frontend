@@ -14,7 +14,7 @@ export default function WhatsAppFAB(){
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with us on WhatsApp"
-      className="fixed bottom-3 md:bottom-20  right-4 z-[2000] inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg ring-1 ring-black/5 transition-transform hover:scale-105 active:scale-95"
+      className="fixed bottom-[4rem] md:bottom-[4rem] right-4 z-[2000] inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg ring-1 ring-black/5 transition-transform hover:scale-105 active:scale-95"
     >
       {/* WhatsApp SVG icon */}
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="h-7 w-7" fill="currentColor" aria-hidden="true">

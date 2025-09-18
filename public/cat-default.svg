@@ -1,1 +1,23 @@
-<svg width="320" height="220" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset="1" stop-color="#22c55e"/></linearGradient></defs><rect width="320" height="220" rx="16" fill="url(#g)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="24">Category</text></svg>
+<svg width="320" height="220" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g9" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbfdff"/>
+      <stop offset="100%" stop-color="#eef2f7"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="220" rx="16" fill="url(#g9)"/>
+  <g stroke="#000" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Default Icon: wires + MCB + pipe -->
+    <!-- pipe -->
+    <rect x="30" y="160" width="170" height="18" rx="9"/>
+    <!-- MCB -->
+    <rect x="210" y="60" width="80" height="90" rx="8"/>
+    <rect x="222" y="72" width="56" height="30" rx="5"/>
+    <rect x="226" y="108" width="16" height="34" rx="4"/>
+    <rect x="248" y="108" width="16" height="34" rx="4"/>
+    <!-- wires -->
+    <path d="M40 60 C80 80, 110 40, 150 60" />
+    <path d="M40 90 C90 110, 120 70, 160 92" />
+    <path d="M40 120 C100 140, 130 100, 170 120" />
+  </g>
+</svg>

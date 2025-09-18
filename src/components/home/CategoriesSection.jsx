@@ -12,31 +12,53 @@ export default function CategoriesSection() {
     scrollLeft: 0,
     pointerType: "mouse",
   });
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await api.get("/categories");
-        setCategories(res.data.data || []);
-      } catch (e) {}
-    })();
-  }, []);
+
+useEffect(() => {
+  (async () => {
+    try {
+      const res = await api.get("/categories");
+      const cats = res.data.data || [];
+      // Sort Z -> A (case-insensitive)
+      cats.sort((a, b) => b.name.localeCompare(a.name, undefined, { sensitivity: "base" }));
+      setCategories(cats);
+    } catch (e) {}
+  })();
+}, []);
+
+
   useEffect(() => {
     const el = catRef.current;
     if (el) el.scrollTo({ left: 0, behavior: "auto" });
   }, [categories.length]);
+
   const catsToShow = categories.map((c) => c.name);
-  const catImgMap = {
-    pipes: "/cat-pipes.svg",
-    "pipe & fittings": "/cat-fittings.svg",
-    fittings: "/cat-fittings.svg",
-    accessories: "/cat-accessories.svg",
-    conduits: "/cat-conduits.svg",
-    trunking: "/cat-trunking.svg",
-  };
-  function getCatImg(name) {
-    const key = (name || "").toLowerCase();
-    return catImgMap[key] || "/cat-default.svg";
+
+  // Map by slug to avoid whitespace/casing/punctuation mismatches (same logic as backend)
+  function slugifyLocal(name) {
+    return String(name)
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
   }
+
+  const catImgMap = {
+    'rigid-pvc-conduit': '/cat-rigid-pvc-conduit.png',
+    'circular-box': '/cat-circular-box.png',
+    'pvc-conduit-accessories': '/cat-pvc-conduit-accessories.png',
+    'modular-box': '/cat-modular-box.png',
+    'mcb-box': '/cat-mcb-box.png',
+    'mcb-distribution-box': '/cat-mcb-box.png',
+    'fan-box':'/cat-fan-box.png',
+    'fan-accessories':'/cat-fan-accessories.png',
+    'conceal-box':'/cat-conceal-box.png'
+  };
+
+  function getCatImg(name) {
+    const key = slugifyLocal(name || '');
+    return catImgMap[key] || '/cat-default.svg';
+  }
+  
   function onCatPointerDown(e) {
     const el = catRef.current;
     if (!el) return;
@@ -52,6 +74,7 @@ export default function CategoriesSection() {
       pointerType: "touch",
     };
   }
+
   function onCatPointerMove(e) {
     const el = catRef.current;
     if (!el) return;
@@ -71,6 +94,7 @@ export default function CategoriesSection() {
     }
     el.scrollLeft = d.scrollLeft - dx;
   }
+
   function onCatPointerUp(e) {
     const el = catRef.current;
     if (!el) return;
@@ -80,6 +104,7 @@ export default function CategoriesSection() {
       el.releasePointerCapture(e.pointerId);
     } catch {}
   }
+
   function onCatWheel(e) {
     const el = catRef.current;
     if (!el) return;
@@ -88,6 +113,7 @@ export default function CategoriesSection() {
       el.scrollBy({ left: e.deltaY, behavior: "auto" });
     }
   }
+
   return (
     <section
       className="relative bg-primary text-platinum"
@@ -110,6 +136,7 @@ export default function CategoriesSection() {
               Discover all Products
             </Link>
           </div>
+
           <div className="lg:col-span-2">
             <div className="relative pb-12">
               <div
@@ -124,7 +151,7 @@ export default function CategoriesSection() {
                 style={{ WebkitOverflowScrolling: "touch" }}
               >
                 <div className="flex gap-5 pr-10 justify-start">
-                  {catsToShow.slice(0, 12).map((c) => (
+                  {catsToShow.slice(0, 10).map((c) => (
                     <Link
                       key={c}
                       to={`/products?category=${encodeURIComponent(c)}`}
@@ -137,7 +164,7 @@ export default function CategoriesSection() {
                           loading="lazy"
                           decoding="async"
                           sizes="(max-width: 640px) 260px, (max-width: 768px) 300px, 320px"
-                          className="h-full w-full object-cover transition-transform duration-300 ease-out hover:text-[2rem]  md:group-hover:scale-110 active:scale-95"
+                          className="h-full w-full object-cover transition-transform duration-300 ease-out md:group-hover:scale-110 active:scale-95"
                         />
                       </div>
                       <div className="mt-2 text-base sm:text-lg font-medium text-white/90">
@@ -145,13 +172,14 @@ export default function CategoriesSection() {
                       </div>
                     </Link>
                   ))}
+
                   <Link
                     to="/products"
                     className="group w-[240px] sm:w-[280px] md:w-[320px] flex-shrink-0 snap-start"
                   >
                     <div className="relative h-[170px] sm:h-[200px] md:h-[220px] overflow-hidden rounded-xl bg-white shadow-lg">
                       <img
-                        src="/category-see-all.svg"
+                        src="/discover-all.png"
                         alt="Explore all categories"
                         loading="lazy"
                         decoding="async"
@@ -170,6 +198,7 @@ export default function CategoriesSection() {
                   </Link>
                 </div>
               </div>
+
               <div className="pointer-events-none absolute bottom-2 right-2 sm:bottom-0 sm:right-0 mb-1 flex gap-2">
                 <button
                   aria-label="Prev"

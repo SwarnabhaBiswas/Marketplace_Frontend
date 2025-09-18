@@ -22,7 +22,7 @@ export default function About(){
                 </m.p>
               </div>
               <m.div className="relative" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeSlideUp}>
-                <img src="/about-illustration.svg" alt="About illustration" loading="lazy" decoding="async" className="w-full h-auto" />
+                <img src="/Banner_2.jpg" alt="About illustration" loading="lazy" decoding="async" className="w-full h-auto" />
               </m.div>
             </div>
           </div>
@@ -33,20 +33,20 @@ export default function About(){
             <m.h2 className="text-2xl font-semibold" variants={fadeSlideUp}>Company Profile</m.h2>
             <m.p className="mt-2 text-slate-700" variants={fadeSlideUp} custom={0.08}>
               With a strong manufacturing backbone and a pan-India network, Swasti delivers uPVC conduits,
-              fittings and accessories that meet stringent quality benchmarks. Our team brings decades of
-              product and process expertise to serve contractors, distributors and OEMs.
+              fittings and MS accessories that meet stringent quality benchmarks. Our team brings decades of
+              product and process expertise to serve contractors & dealers.
             </m.p>
           </m.section>
 
-          <m.section id="plants" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeSlideUp}>
-            <m.h2 className="text-2xl font-semibold" variants={fadeSlideUp}>Our Plants</m.h2>
+          <m.section id="why-us" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeSlideUp}>
+            <m.h2 className="text-2xl font-semibold" variants={fadeSlideUp}>Why Us?</m.h2>
             <div className="mt-4 overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-100">
               <div className="grid grid-cols-1 md:grid-cols-2">
-                {/* Left: facility image */}
+                {/* Left: supporting image */}
                 <m.div className="relative" variants={fadeSlideUp}>
                   <img
-                    src="/plant-facility.jpg"
-                    alt="Swasti manufacturing facility"
+                    src="/why-us.jpg"
+                    alt="Swasti operations"
                     loading="lazy"
                     decoding="async"
                     className="h-full w-full object-cover"
@@ -54,42 +54,39 @@ export default function About(){
                   />
                 </m.div>
 
-                {/* Right: content */}
+                {/* Right: why-us pointers */}
                 <m.div className="p-6 sm:p-8" variants={fadeSlideUp} custom={0.08}>
-                  <h3 className="text-xl font-extrabold text-attention">Infrastructure :</h3>
-                  <p className="mt-3 text-slate-700">
-                    At Swasti, we take pride in our state-of-the-art manufacturing infrastructure with in-house
-                    tooling, testing and R&amp;D. Spread across a large campus, our lines are designed to fulfill
-                    orders of every size while maintaining strict quality and safety standards.
-                  </p>
-                  <p className="mt-3 text-slate-700">
-                    Our advanced facility is equipped with cutting-edge machinery and over two dozen dedicated
-                    production lines. This capacity allows a broad product mix—from RIGID PVC pipes and SWR pipes
-                    to elastomeric pipes and uPVC fittings—ensuring reliable supply for projects in housing,
-                    industry and infrastructure.
-                  </p>
-
-                  <h4 className="mt-5 text-lg font-semibold">Production capacity</h4>
-                  <div className="mt-2 space-y-2">
-                    <details className="group rounded-lg border border-slate-200 bg-slate-50 p-3 open:bg-slate-50">
-                      <summary className="flex list-none items-center justify-between text-slate-800">
-                        <span className="font-medium">UPVC Pipes / CPVC Pipes / SWR Pipes / Plumbing Pipes</span>
-                        <span className="text-sm text-slate-600">49866 MT</span>
-                      </summary>
-                    </details>
-                    <details className="group rounded-lg border border-slate-200 bg-slate-50 p-3 open:bg-slate-50">
-                      <summary className="flex list-none items-center justify-between text-slate-800">
-                        <span className="font-medium">HDPE Pipe / Sprinkler</span>
-                        <span className="text-sm text-slate-600">3942 MT</span>
-                      </summary>
-                    </details>
-                    <details className="group rounded-lg border border-slate-200 bg-slate-50 p-3 open:bg-slate-50">
-                      <summary className="flex list-none items-center justify-between text-slate-800">
-                        <span className="font-medium">PVC Fitting</span>
-                        <span className="text-sm text-slate-600">1832 MT</span>
-                      </summary>
-                    </details>
-                  </div>
+                  <h3 className="text-xl font-extrabold text-attention">What sets us apart</h3>
+                  <ul className="mt-4 space-y-3 text-slate-800">
+                    <li className="flex items-start gap-2">
+                      <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-attention" />
+                      <span>Manufactured in compliance with IS:9537 (1983) Part III of the Bureau of Indian Standards.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-attention" />
+                      <span>Outstanding value: high-quality products that deliver great return for your money.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-attention" />
+                      <span>Trusted by leading real-estate developers who rely on our brand and commitment.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-attention" />
+                      <span>Experienced and dedicated management team backing every engagement.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-attention" />
+                      <span>Relentless focus on customer satisfaction at every touchpoint.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-attention" />
+                      <span>Special care in packaging to ensure products arrive with zero defects.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-attention" />
+                      <span>Dedicated logistics team for on-time delivery to your preferred location.</span>
+                    </li>
+                  </ul>
                 </m.div>
               </div>
             </div>
@@ -106,27 +103,16 @@ export default function About(){
                     Our quality systems emphasize traceability and continual improvement — from raw material procurement to final dispatch.
                   </p>
 
-                  <h4 className="mt-6 text-lg font-semibold">Product Quality Certificates :</h4>
-                  <p className="mt-1 text-slate-700">We have earned the following quality certificates for our products:</p>
-                  <div className="mt-3 space-y-2">
-                    {[
-                      ['IS 4985', 'for Potable Water in PVC Pipes'],
-                      ['IS 4984', 'for potable water in HDPE Pipes'],
-                      ['IS 13592', 'for Sewerage Pipe'],
-                      ['IS 14151 Part I to Part II', 'for Sprinkler System for Irrigation'],
-                      ['IS 15778', 'for Hot and cold Water system'],
-                      ['IS 9537', 'for Conduits for electrical installation'],
-                      ['IS 12786', 'for Lateral Pipes for Irrigation'],
-                      ['IS 14333', 'for HDPE pipes for sewerage'],
-                    ].map(([code, desc]) => (
-                      <details key={code} className="group rounded-lg border border-slate-200 bg-slate-50 p-3 open:bg-slate-50">
-                        <summary className="flex list-none items-center justify-between text-slate-800">
-                          <span className="font-medium">{code}</span>
-                          <span className="text-sm text-slate-600">{desc}</span>
-                        </summary>
-                      </details>
-                    ))}
-                  </div>
+                  <h4 className="mt-6 text-lg font-semibold">Quality tests we perform</h4>
+                  <ul className="mt-2 list-disc pl-5 space-y-1 text-slate-800">
+                    <li>Marking test</li>
+                    <li>Dimension test</li>
+                    <li>Construction test</li>
+                    <li>Bending test</li>
+                    <li>Compression test (during and after the load)</li>
+                    <li>Impact test (mechanical properties)</li>
+                    <li>Collapse test (mechanical properties)</li>
+                  </ul>
                 </m.div>
 
                 {/* Right: image */}
@@ -137,8 +123,51 @@ export default function About(){
                     loading="lazy"
                     decoding="async"
                     className="h-full w-full object-cover"
-                    onError={(e)=>{ e.currentTarget.onerror=null; e.currentTarget.src='/founder.svg'; }}
+                    onError={(e)=>{ e.currentTarget.onerror=null; e.currentTarget.src='/quality.jpg'; }}
                   />
+                </m.div>
+              </div>
+            </div>
+          </m.section>
+
+          {/* Passion & Professionalism card with video */}
+          <m.section id="craft" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeSlideUp}>
+            <div className="overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-100">
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                {/* Left: text */}
+                <m.div className="p-6 sm:p-8" variants={fadeSlideUp}>
+                  <h3 className="text-2xl font-extrabold text-attention">Passion & Professionalism</h3>
+                  <p className="mt-3 text-slate-700">
+                    We put our heart into every product we make. From thoughtful design to rigorous testing, our
+                    teams operate with craftsmanship, discipline and a customer-first mindset—so you can count on
+                    consistent quality, reliable timelines and transparent communication.
+                  </p>
+                  <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-800">
+                    <li className="flex items-start gap-2"><span className="mt-1 h-2 w-2 rounded-full bg-attention" /> ISO-aligned processes</li>
+                    <li className="flex items-start gap-2"><span className="mt-1 h-2 w-2 rounded-full bg-attention" /> Skilled, trained workforce</li>
+                    <li className="flex items-start gap-2"><span className="mt-1 h-2 w-2 rounded-full bg-attention" /> On-time, in-full delivery</li>
+                    <li className="flex items-start gap-2"><span className="mt-1 h-2 w-2 rounded-full bg-attention" /> Customer-first service</li>
+                  </ul>
+                </m.div>
+
+                {/* Right: responsive video (replace /about.mp4 with your actual asset or embed) */}
+                <m.div className="relative p-6 sm:p-8" variants={fadeSlideUp} custom={0.08}>
+                  <div className="relative w-full overflow-hidden rounded-xl bg-black">
+                    {/* 16:9 aspect ratio */}
+                    <div className="pt-[56.25%]" />
+                    <div className="absolute inset-0">
+                      <video
+                        controls
+                        playsInline
+                        preload="metadata"
+                        poster="/Banner_2.jpg"
+                        className="h-full w-full rounded-xl object-contain"
+                      >
+                        <source src="/vid1.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  </div>
                 </m.div>
               </div>
             </div>
@@ -148,11 +177,11 @@ export default function About(){
             <div className="rounded-2xl bg-white shadow-xl ring-1 ring-slate-100 p-5 sm:p-6">
               <div className="flex flex-col sm:flex-row items-center gap-5">
                 <m.img
-                  src="/founder.svg"
+                  src="/founder.jpg"
                   alt="Founder"
                   loading="lazy"
                   decoding="async"
-                  className="h-28 w-28 rounded-xl object-cover"
+                  className="h-30 w-28 rounded-xl object-cover"
                   variants={fadeSlideUp}
                 />
                 <m.div variants={fadeSlideUp} custom={0.08} className="text-center sm:text-left">
