@@ -108,8 +108,8 @@ export default function Products() {
                 onChange={(e) => {
                   const newCat = e.target.value;
                   setCat(newCat);
-                  setSearchInput("");
-                  setQ("");
+                  setSearchInput(""); // clear the input field
+                  setQ(""); // clear the search query
                 }}
                 className="rounded-full bg-platinum text-primary border border-neutral px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-accent"
               >
