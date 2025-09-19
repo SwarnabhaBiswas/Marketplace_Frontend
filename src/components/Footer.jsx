@@ -123,8 +123,8 @@ export default function Footer(){
           <div className="text-xs flex flex-wrap items-center justify-between gap-3 mt-6 md:mt-0">
             <div>© {new Date().getFullYear()} Swasti</div>
             <div className="flex items-center gap-4">
-              <a href="#" className="hover:underline">Privacy Policy</a>
-              <a href="#" className="hover:underline">Terms &amp; Conditions</a>
+              {/* <a href="#" className="hover:underline">Privacy Policy</a> */}
+              {/* <a href="#" className="hover:underline">Terms &amp; Conditions</a> */}
             </div>
           </div>
         </div>

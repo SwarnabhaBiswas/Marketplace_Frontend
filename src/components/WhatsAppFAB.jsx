@@ -6,7 +6,7 @@ export default function WhatsAppFAB(){
   // Hide on admin routes
   if (pathname.startsWith('/admin')) return null;
 
-  const href = 'https://wa.me/8210020803';
+  const href = 'https://wa.me/912269645648';
 
   return (
     <a

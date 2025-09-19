@@ -42,7 +42,7 @@ export default function Header(){
         <div className="flex h-20 items-center justify-between">
           {/* Left: Logo */}
           <div className='md:block'>
-            <Link to="/"><img src='/logo.png' alt='logo' className="md:px-20 h-[2.5em] md:h-[4.7em]"></img></Link>
+            <Link to="/"><img src='/logo.png' alt='logo' className="md:px-20 h-[2.7em] md:h-[4.7em]"></img></Link>
           </div>
 
           {/* Desktop nav */}

@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useSearchParams, useLocation } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import ProductCard from '../components/ProductCard';
-import api from '../api/api';
-import { m } from 'framer-motion';
-import { fadeSlideUp } from '../lib/motion';
+import React, { useEffect, useState } from "react";
+import { useSearchParams, useLocation } from "react-router-dom";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import ProductCard from "../components/ProductCard";
+import api from "../api/api";
+import { m } from "framer-motion";
+import { fadeSlideUp } from "../lib/motion";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [searchParams] = useSearchParams();
   const location = useLocation();
-  const initialCat = searchParams.get('category') || 'all';
-  const initialQ = searchParams.get('q') || '';
+  const initialCat = searchParams.get("category") || "all";
+  const initialQ = searchParams.get("q") || "";
   const [q, setQ] = useState(initialQ);
   const [searchInput, setSearchInput] = useState(initialQ);
   const [categories, setCategories] = useState([]);
@@ -25,7 +25,7 @@ export default function Products() {
   useEffect(() => {
     async function loadCats() {
       try {
-        const res = await api.get('/categories');
+        const res = await api.get("/categories");
         setCategories(res.data.data || []);
       } catch (e) {
         console.error(e);
@@ -37,8 +37,8 @@ export default function Products() {
   // Keep filters in sync with URL query params (category, q)
   useEffect(() => {
     const sp = new URLSearchParams(location.search);
-    const urlCat = sp.get('category') || 'all';
-    const urlQ = sp.get('q') || '';
+    const urlCat = sp.get("category") || "all";
+    const urlQ = sp.get("q") || "";
 
     if (urlCat !== cat) setCat(urlCat);
     if (urlQ !== q) {
@@ -53,8 +53,8 @@ export default function Products() {
     try {
       const params = { page: nextPage, limit: 12 };
       if (q) params.q = q;
-      if (cat && cat !== 'all') params.category = cat;
-      const res = await api.get('/products', { params });
+      if (cat && cat !== "all") params.category = cat;
+      const res = await api.get("/products", { params });
       if (id !== reqId.current) return; // ignore stale responses
       const data = res.data?.data || [];
       setProducts(data);
@@ -73,7 +73,7 @@ export default function Products() {
   }, [q, cat]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);
 
   return (
@@ -83,9 +83,12 @@ export default function Products() {
         {/* Hero banner */}
         <section className="bg-primary text-white py-20 mt-20">
           <div className="container mx-auto px-6 text-center">
-            <h1 className="text-3xl font-bold mb-2 text-neutral">Explore Our Products</h1>
+            <h1 className="text-3xl font-bold mb-2 text-neutral">
+              Explore Our Products
+            </h1>
             <p className="text-platinum max-w-2xl mx-auto">
-              Premium fittings, pipes, and electricals — designed for durability & reliability.
+              Premium fittings, pipes, and electricals — designed for durability
+              & reliability.
             </p>
           </div>
         </section>
@@ -102,11 +105,16 @@ export default function Products() {
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <select
                 value={cat}
-                onChange={e => setCat(e.target.value)}
+                onChange={(e) => {
+                  const newCat = e.target.value;
+                  setCat(newCat);
+                  setSearchInput("");
+                  setQ("");
+                }}
                 className="rounded-full bg-platinum text-primary border border-neutral px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-accent"
               >
                 <option value="all">All Categories</option>
-                {categories.map(c => (
+                {categories.map((c) => (
                   <option key={c._id} value={c.name}>
                     {c.name}
                   </option>
@@ -118,9 +126,9 @@ export default function Products() {
                 aria-label="Search products"
                 placeholder="Search by name or category..."
                 value={searchInput}
-                onChange={e => setSearchInput(e.target.value)}
-                onKeyDown={e => {
-                  if (e.key === 'Enter') setQ(searchInput.trim());
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") setQ(searchInput.trim());
                 }}
                 className="w-full rounded-full border border-neutral px-4 py-2 outline-none focus:ring-2 focus:ring-accent bg-platinum"
               />
@@ -137,7 +145,11 @@ export default function Products() {
                   stroke="currentColor"
                   className="h-5 w-5"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"
+                  />
                 </svg>
               </button>
             </div>
@@ -148,13 +160,13 @@ export default function Products() {
         <div className="container mx-auto px-4 py-10">
           {products.length === 0 && !loadingPage ? (
             <div className="text-center text-gray-600">
-              {q ? `No products found for "${q}".` : 'No products available.'}
+              {q ? `No products found for "${q}".` : "No products available."}
               <div className="mt-4">
                 <button
                   onClick={() => {
-                    setSearchInput('');
-                    setCat('all');
-                    setQ('');
+                    setSearchInput("");
+                    setCat("all");
+                    setQ("");
                     setPage(1);
                   }}
                   className="rounded-full bg-accent px-6 py-2 text-white hover:bg-primary transition"
@@ -205,12 +217,14 @@ export default function Products() {
               }
               for (let i = start; i <= end; i++) pages.push(i);
             }
-            return pages.map(n => (
+            return pages.map((n) => (
               <button
                 key={n}
                 onClick={() => fetchPage(n)}
                 className={`min-w-[2.25rem] rounded-full px-3 py-1.5 text-sm transition ${
-                  page === n ? 'bg-accent text-white' : 'bg-neutral text-primary hover:bg-accent hover:text-white'
+                  page === n
+                    ? "bg-accent text-white"
+                    : "bg-neutral text-primary hover:bg-accent hover:text-white"
                 }`}
               >
                 {n}
