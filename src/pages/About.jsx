@@ -186,7 +186,7 @@ export default function About(){
                 />
                 <m.div variants={fadeSlideUp} custom={0.08} className="text-center sm:text-left">
                   <h3 className="text-2xl font-extrabold text-attention">Founder's Message</h3>
-                  <p className="mt-2 text-lg text-slate-800">“ If there is passion in heart, nothing is impossible ”.</p>
+                  <p className="mt-2 text-md text-slate-800">“ At Swasti Pipes, our vision has always been to deliver products that dealers and distributors can trust. We focus on consistency, durability, and timely supply, ensuring your business grows with ours. Together, we build partnerships that last as strong as our products. ”</p>
                   
                 </m.div>
               </div>

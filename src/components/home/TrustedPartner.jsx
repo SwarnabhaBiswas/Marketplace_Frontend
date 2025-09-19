@@ -44,19 +44,19 @@ export default function TrustedPartner() {
         <div>
           <div className="grid grid-cols-2 gap-8 justify-items-center items-center">
             {/* ISI */}
-            <m.div className="flex flex-col items-center text-center" variants={fadeSlideUp} custom={0.1}>
+            <m.div className="flex flex-col items-center text-center md:bg-primary md:border-none bg-attention px-6 py-2 border rounded-xl" variants={fadeSlideUp} custom={0.1}>
               <img src="/cert-isi.svg" alt="ISI Accredited" className="h-20 w-auto" />
               <span className="mt-2 text-sm font-medium text-platinum">ISI Accredited</span>
             </m.div>
 
             {/* ISO */}
-            <m.div className="flex flex-col items-center text-center" variants={fadeSlideUp} custom={0.14}>
-              <img src="/cert-iso.svg" alt="ISO 9001:2015 Certified" className="h-20 w-auto" />
+            <m.div className="flex flex-col items-center text-center bg-attention py-2 border rounded-xl md:bg-primary md:border-none" variants={fadeSlideUp} custom={0.14}>
+              <img src="/cert-iso.svg" alt="ISO 9001:2015 Certified" className="h-[3.8rem] w-auto" />
               <span className="mt-2 text-sm font-medium text-platinum">ISO 9001:2015 Certified</span>
             </m.div>
 
             {/* BSCIC / JAS-ANZ */}
-            <m.div className="col-span-2 flex flex-col items-center text-center" variants={fadeSlideUp} custom={0.18}>
+            <m.div className="col-span-2 flex flex-col items-center text-center bg-attention px-2 py-2 border rounded-xl md:bg-primary md:border-none" variants={fadeSlideUp} custom={0.18}>
               <img src="/cert.png" alt="BSCIC / JAS-ANZ" className="h-16 w-auto" />
               <span className="mt-2 text-sm font-medium text-platinum">ISO 9001 - 2008 Registered Company</span>
             </m.div>
