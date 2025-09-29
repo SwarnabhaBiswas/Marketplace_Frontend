@@ -1,6 +1,6 @@
 import React from 'react';
 import { m } from 'framer-motion';
-import { fadeSlideUp } from '../../lib/motion';
+import { fadeSlideUp, fadeSlideLeft, fadeSlideRight, containerStagger } from '../../lib/motion';
 
 // Icon components for Conduits
 const ThermalIcon = () => (
@@ -118,29 +118,27 @@ export default function ProductHighlights() {
       className="py-16"
       initial="hidden" 
       whileInView="visible" 
-      viewport={{ once: true, amount: 0.2 }} 
-      variants={fadeSlideUp}
+      viewport={{ once: true, amount: 0.15 }} 
+      variants={containerStagger(0.08)}
     >
       <div className="container mx-auto px-8 md:px-16">
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-16 max-w-7xl mx-auto">
           
           {/* Conduits at a Glance Section */}
-          <m.div className="flex flex-col" variants={fadeSlideUp}>
-            <m.div className="text-center mb-12" variants={fadeSlideUp}>
+          <m.div className="flex flex-col" variants={fadeSlideLeft}>
+            <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
                 Conduits at a Glance
               </h2>
               <div className="w-24 h-1 bg-accent mx-auto"></div>
-            </m.div>
+            </div>
 
             <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-1 md:gap-8 flex-1">
               {conduitsFeatures.map((feature, index) => (
-                <m.div
+                <div
                   key={index}
                   className="flex flex-col items-center text-center space-y-3"
-                  variants={fadeSlideUp}
-                  custom={feature.delay}
                 >
                   <div className="flex-shrink-0">
                     <div className="w-16 h-16 bg-gradient-to-br from-accent to-blue-600 rounded-full flex items-center justify-center shadow-lg">
@@ -150,27 +148,25 @@ export default function ProductHighlights() {
                   <p className="text-gray-700 text-sm sm:text-base md:text-lg font-medium leading-relaxed px-2">
                     {feature.title}
                   </p>
-                </m.div>
+                </div>
               ))}
             </div>
           </m.div>
 
           {/* MS Accessories Section */}
-          <m.div className="flex flex-col" variants={fadeSlideUp}>
-            <m.div className="text-center mb-12" variants={fadeSlideUp}>
+          <m.div className="flex flex-col" variants={fadeSlideRight}>
+            <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
                 MS Accessories
               </h2>
               <div className="w-24 h-1 bg-attention mx-auto"></div>
-            </m.div>
+            </div>
 
             <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-1 md:gap-8 flex-1">
               {msAccessories.map((accessory, index) => (
-                <m.div
+                <div
                   key={index}
                   className="flex flex-col items-center text-center space-y-3"
-                  variants={fadeSlideUp}
-                  custom={accessory.delay}
                 >
                   <div className="flex-shrink-0">
                     <div className="w-16 h-16 bg-gradient-to-br from-attention to-orange-600 rounded-full flex items-center justify-center shadow-lg">
@@ -180,7 +176,7 @@ export default function ProductHighlights() {
                   <p className="text-gray-700 text-sm sm:text-base md:text-lg font-medium leading-relaxed px-2">
                     {accessory.title}
                   </p>
-                </m.div>
+                </div>
               ))}
             </div>
           </m.div>

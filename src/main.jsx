@@ -55,22 +55,48 @@ function ScrollToTopRoute() {
   return null;
 }
 
+function RoutesBlock() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/products" element={<Products />} />
+      <Route path="/product/:slug" element={<ProductDetail />} />
+      <Route path="/become-dealer" element={<DealerForm />} />
+      <Route path="/support" element={<Support />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin" element={<AdminDashboard />} />
+    </Routes>
+  );
+}
+
+// Defer mounting routes slightly after route spinner completes, so whileInView observers initialize correctly
+function DeferredRoutes() {
+  const location = useLocation();
+  const [ready, setReady] = React.useState(true);
+  const [renderKey, setRenderKey] = React.useState(location.pathname);
+
+  React.useEffect(() => {
+    // On route change, briefly unmount route tree, then remount after spinner (220ms) finishes
+    setReady(false);
+    const t = setTimeout(() => {
+      setRenderKey(location.pathname + ':' + Date.now());
+      setReady(true);
+    }, 260);
+    return () => clearTimeout(t);
+  }, [location.pathname]);
+
+  if (!ready) return null;
+  return <div key={renderKey}><RoutesBlock /></div>;
+}
+
 function AppRoutes() {
   return (
     <BrowserRouter>
       <RouteSpinner />
       <ScrollToHash />
       <ScrollToTopRoute />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/product/:slug" element={<ProductDetail />} />
-        <Route path="/become-dealer" element={<DealerForm />} />
-        <Route path="/support" element={<Support />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-      </Routes>
+      <DeferredRoutes />
       <WhatsAppFAB />
     </BrowserRouter>
   );

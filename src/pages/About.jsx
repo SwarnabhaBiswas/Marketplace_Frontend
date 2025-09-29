@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { m } from 'framer-motion';
-import { fadeSlideUp } from '../lib/motion';
+import { fadeSlideUp, fadeSlideLeft, fadeSlideRight, containerStagger } from '../lib/motion';
 
 export default function About(){
   return (
@@ -13,15 +13,15 @@ export default function About(){
         <section className="bg-primary text-platinum">
           <div className="container mx-auto px-4 py-12 max-w-6xl mt-20">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
-              <div>
-                <m.h1 className="text-4xl sm:text-5xl font-bold" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeSlideUp}>About Swasti</m.h1>
-                <m.p className="mt-3 text-platinum/90 max-w-3xl" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeSlideUp} custom={0.08}>
-                  Swasti is a manufacturer of premium electrical conduits and accessories, committed to reliable
+              <m.div variants={containerStagger(0.08)} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
+                <m.h1 className="text-4xl sm:text-5xl font-bold" variants={fadeSlideLeft}>About Swasti</m.h1>
+                <m.p className="mt-3 text-platinum/90 max-w-3xl" variants={fadeSlideLeft} custom={0.08}>
+                  Swasti delivers premium electrical conduits and accessories, committed to reliable
                   infrastructure for homes, industry and public works. We focus on durability, certification, and
                   on-time delivery at scale.
                 </m.p>
-              </div>
-              <m.div className="relative" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeSlideUp}>
+              </m.div>
+              <m.div className="relative" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeSlideRight}>
                 <img src="/Banner_2.jpg" alt="About illustration" loading="lazy" decoding="async" className="w-full h-auto" />
               </m.div>
             </div>
@@ -29,21 +29,23 @@ export default function About(){
         </section>
 
         <div className="container mx-auto px-4 py-10 max-w-6xl">
-          <m.section className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeSlideUp}>
-            <m.h2 className="text-2xl font-semibold" variants={fadeSlideUp}>Company Profile</m.h2>
-            <m.p className="mt-2 text-slate-700" variants={fadeSlideUp} custom={0.08}>
-              With a strong manufacturing backbone and a pan-India network, Swasti delivers uPVC conduits,
+<m.section className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={containerStagger(0.08)}>
+            <m.div variants={fadeSlideLeft}>
+              <h2 className="text-2xl font-semibold">Company Profile</h2>
+              <p className="mt-2 text-slate-700">
+              Swasti delivers uPVC conduits,
               fittings and MS accessories that meet stringent quality benchmarks. Our team brings decades of
               product and process expertise to serve contractors & dealers.
-            </m.p>
+              </p>
+            </m.div>
           </m.section>
 
-          <m.section id="why-us" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeSlideUp}>
-            <m.h2 className="text-2xl font-semibold" variants={fadeSlideUp}>Why Us?</m.h2>
+<m.section id="why-us" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={containerStagger(0.08)}>
+            <h2 className="text-2xl font-semibold">Why Us?</h2>
             <div className="mt-4 overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-100">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Left: supporting image */}
-                <m.div className="relative" variants={fadeSlideUp}>
+                <m.div className="relative" variants={fadeSlideLeft}>
                   <img
                     src="/why-us.jpg"
                     alt="Swasti operations"
@@ -55,12 +57,12 @@ export default function About(){
                 </m.div>
 
                 {/* Right: why-us pointers */}
-                <m.div className="p-6 sm:p-8" variants={fadeSlideUp} custom={0.08}>
+                <m.div className="p-6 sm:p-8" variants={fadeSlideRight} custom={0.08}>
                   <h3 className="text-xl font-extrabold text-attention">What sets us apart</h3>
                   <ul className="mt-4 space-y-3 text-slate-800">
                     <li className="flex items-start gap-2">
                       <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-attention" />
-                      <span>Manufactured in compliance with IS:9537 (1983) Part III of the Bureau of Indian Standards.</span>
+                      <span>In compliance with IS:9537 Part III of the Bureau of Indian Standards.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-attention" />
@@ -92,14 +94,14 @@ export default function About(){
             </div>
           </m.section>
 
-          <m.section id="quality" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeSlideUp}>
+<m.section id="quality" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={containerStagger(0.08)}>
             <div className="overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-100">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Left: text */}
-                <m.div className="p-6 sm:p-8" variants={fadeSlideUp}>
+                <m.div className="p-6 sm:p-8" variants={fadeSlideLeft}>
                   <h3 className="text-2xl font-extrabold text-attention">Quality :</h3>
                   <p className="mt-3 text-slate-700">
-                    We prioritize the quality of our manufactured products as a fundamental criterion that sets us apart in the market.
+                    We prioritize the quality of our products as a fundamental criterion that sets us apart in the market.
                     Our quality systems emphasize traceability and continual improvement — from raw material procurement to final dispatch.
                   </p>
 
@@ -116,7 +118,7 @@ export default function About(){
                 </m.div>
 
                 {/* Right: image */}
-                <m.div className="relative" variants={fadeSlideUp} custom={0.08}>
+                <m.div className="relative" variants={fadeSlideRight} custom={0.08}>
                   <img
                     src="/iso-9001.jpg"
                     alt="ISO 9001 Quality Management"
@@ -131,11 +133,11 @@ export default function About(){
           </m.section>
 
           {/* Passion & Professionalism card with video */}
-          <m.section id="craft" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={fadeSlideUp}>
+<m.section id="craft" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={containerStagger(0.08)}>
             <div className="overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-100">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Left: text */}
-                <m.div className="p-6 sm:p-8" variants={fadeSlideUp}>
+                <m.div className="p-6 sm:p-8" variants={fadeSlideLeft}>
                   <h3 className="text-2xl font-extrabold text-attention">Passion & Professionalism</h3>
                   <p className="mt-3 text-slate-700">
                     We put our heart into every product we make. From thoughtful design to rigorous testing, our
@@ -151,7 +153,7 @@ export default function About(){
                 </m.div>
 
                 {/* Right: responsive video (replace /about.mp4 with your actual asset or embed) */}
-                <m.div className="relative p-6 sm:p-8" variants={fadeSlideUp} custom={0.08}>
+                <m.div className="relative p-6 sm:p-8" variants={fadeSlideRight} custom={0.08}>
                   <div className="relative w-full overflow-hidden rounded-xl bg-black">
                     {/* 16:9 aspect ratio */}
                     <div className="pt-[56.25%]" />
@@ -173,18 +175,17 @@ export default function About(){
             </div>
           </m.section>
 
-          <m.section id="founder" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={fadeSlideUp}>
+<m.section id="founder" className="mt-10" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={containerStagger(0.08)}>
             <div className="rounded-2xl bg-white shadow-xl ring-1 ring-slate-100 p-5 sm:p-6">
-              <div className="flex flex-col sm:flex-row items-center gap-5">
-                <m.img
+              <div className="flex flex-col sm:flex-row items-center gap-5">                <m.img
                   src="/founder.jpg"
                   alt="Founder"
                   loading="lazy"
                   decoding="async"
                   className="h-30 w-28 rounded-xl object-cover"
-                  variants={fadeSlideUp}
+                  variants={fadeSlideLeft}
                 />
-                <m.div variants={fadeSlideUp} custom={0.08} className="text-center sm:text-left">
+                <m.div variants={fadeSlideRight} custom={0.08} className="text-center sm:text-left">
                   <h3 className="text-2xl font-extrabold text-attention">Founder's Message</h3>
                   <p className="mt-2 text-md text-slate-800">“ At Swasti Pipes, our vision has always been to deliver products that dealers and distributors can trust. We focus on consistency, durability, and timely supply, ensuring your business grows with ours. Together, we build partnerships that last as strong as our products. ”</p>
                   

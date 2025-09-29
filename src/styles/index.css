@@ -110,9 +110,9 @@
     }
   }
   
-  /* Smooth transitions for all interactive elements */
+  /* Smooth transitions for common visual props only (avoid transform/opacity to not fight Framer Motion) */
   * {
-    transition-property: opacity, transform, background-color, border-color, color, fill, stroke;
+    transition-property: background-color, border-color, color, fill, stroke;
     transition-duration: 200ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }

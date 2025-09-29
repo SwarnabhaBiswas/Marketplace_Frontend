@@ -37,6 +37,31 @@ export const fadeSlideUp = {
   }),
 };
 
+// Variants: fade + slide from left/right for two-column reveal patterns
+export const fadeSlideLeft = {
+  hidden: { opacity: 0, x: -120, willChange: 'transform, opacity' },
+  visible: (d = 0) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: d, duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
+
+export const fadeSlideRight = {
+  hidden: { opacity: 0, x: 120, willChange: 'transform, opacity' },
+  visible: (d = 0) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: d, duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  }),
+};
+
+// Container stagger with no transform to avoid nested transform jank
+export const containerStagger = (stagger = 0.08) => ({
+  hidden: {},
+  visible: { transition: { staggerChildren: stagger } },
+});
+
 // Convenience components
 export function MotionSection({ children, delay = 0.3, className = '', as: As = m.section, ...rest }) {
   const reduce = useReducedOnSmall();
