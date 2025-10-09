@@ -45,21 +45,17 @@ export default function TrustedPartner() {
           <div className="grid grid-cols-2 gap-8 justify-items-center items-center">
             {/* ISI */}
             <m.div className="flex flex-col items-center text-center md:bg-primary md:border-none bg-attention px-6 py-2 border rounded-xl" variants={fadeSlideUp} custom={0.1}>
-              <img src="/cert-isi.svg" alt="ISI Accredited" className="h-20 w-auto" />
+              <img src="/cert-isi.svg" alt="ISI Accredited" className="h-40 w-auto" />
               <span className="mt-2 text-sm font-medium text-platinum">ISI Accredited</span>
             </m.div>
 
             {/* ISO */}
-            <m.div className="flex flex-col items-center text-center bg-attention py-[1.1rem] px-6 border rounded-xl md:bg-primary md:border-none" variants={fadeSlideUp} custom={0.14}>
-              <img src="/cert-iso.svg" alt="ISO 9001:2015 Certified" className="h-[3.8rem] w-auto" />
+            <m.div className="flex flex-col items-center text-center bg-attention py-[0.7rem] px-6 border rounded-xl md:bg-primary md:border-none" variants={fadeSlideUp} custom={0.14}>
+              <img src="/cert-iso.svg" alt="ISO 9001:2015 Certified" className="h-[9.7rem] w-auto" />
               <span className="mt-2 text-sm font-medium text-platinum">ISO Certified</span>
             </m.div>
 
-            {/* BSCIC / JAS-ANZ */}
-            <m.div className="col-span-2 flex flex-col items-center text-center bg-attention px-3 py-5 border rounded-xl md:bg-primary md:border-none" variants={fadeSlideUp} custom={0.18}>
-              <img src="/cert.png" alt="BSCIC / JAS-ANZ" className="h-16 w-auto" />
-              <span className="mt-2 text-sm font-medium text-platinum">ISO Registered Company</span>
-            </m.div>
+            
           </div>
         </div>
       </div>
