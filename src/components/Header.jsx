@@ -50,8 +50,9 @@ export default function Header(){
             <NavLink to="/" className={navClass}>Home</NavLink>
             <NavLink to="/products" className={navClass}>Products</NavLink>
             <NavLink to="/about" className={navClass}>About</NavLink>
-            <NavLink to="/support" className={navClass}>Support</NavLink>
             <NavLink to="/become-dealer" className={navClass}>Business Enquiry</NavLink>
+            <NavLink to="/dealers-map" className={navClass}>Locate Us</NavLink>
+            <NavLink to="/support" className={navClass}>Support</NavLink>
             {isAdmin ? (
               <>
                 <NavLink to="/admin" className={navClass}>Dashboard</NavLink>
@@ -90,6 +91,7 @@ export default function Header(){
               <NavLink to="/become-dealer" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>Business</NavLink>
               <NavLink to="/about" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>About</NavLink>
               <NavLink to="/support" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>Support</NavLink>
+              <NavLink to="/dealers-map" onClick={() => setOpen(false)} className={({isActive})=>`px-2 py-2 rounded hover:bg-primary/5 ${isActive?'text-accent':'text-primary'}`}>Locate Us</NavLink>
               <a href="/#contact" onClick={() => setOpen(false)} className={`px-2 py-2 rounded hover:bg-primary/5 text-primary`}>Contact</a>
               {isAdmin ? (
                 <>

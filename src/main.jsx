@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import DealerForm from './pages/DealerForm';
+import DealersMap from './pages/DealersMap';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import Support from './pages/Support';
@@ -23,7 +24,8 @@ function ScrollToHash() {
     const id = hash.replace('#', '');
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Use instant scroll to avoid jank on heavy pages
+      el.scrollIntoView({ behavior: 'auto', block: 'start' });
     }
   }, [hash]);
   return null;
@@ -37,11 +39,6 @@ function RouteSpinner() {
     return () => clearTimeout(t);
   }, [location]);
   
-  // Initialize smooth scrolling when component mounts
-  React.useEffect(() => {
-    initializeSmoothScrolling();
-  }, []);
-  
   return null;
 }
 
@@ -49,7 +46,8 @@ function ScrollToTopRoute() {
   const { pathname, hash } = useLocation();
   React.useEffect(() => {
     if (!hash) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Avoid smooth scroll on route change for performance
+      window.scrollTo({ top: 0, behavior: 'auto' });
     }
   }, [pathname]);
   return null;
@@ -62,6 +60,7 @@ function RoutesBlock() {
       <Route path="/products" element={<Products />} />
       <Route path="/product/:slug" element={<ProductDetail />} />
       <Route path="/become-dealer" element={<DealerForm />} />
+      <Route path="/dealers-map" element={<DealersMap />} />
       <Route path="/support" element={<Support />} />
       <Route path="/about" element={<About />} />
       <Route path="/admin/login" element={<AdminLogin />} />

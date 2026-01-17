@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import ProductForm from "../../components/ProductForm";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import MapPicker from "../../components/MapPicker";
 
 export default function AdminDashboard() {
   const [dealers, setDealers] = useState([]);
@@ -18,6 +19,48 @@ export default function AdminDashboard() {
   const [prodPage, setProdPage] = useState(1);
   const [prodTotalPages, setProdTotalPages] = useState(1);
   const [prodLoading, setProdLoading] = useState(false);
+  const [showAddDealer, setShowAddDealer] = useState(false);
+  const [showMapPicker, setShowMapPicker] = useState(false);
+  const [savingDealer, setSavingDealer] = useState(false);
+  const [dealerError, setDealerError] = useState("");
+  const [hasDealerCoords, setHasDealerCoords] = useState(false);
+  const [newDealer, setNewDealer] = useState({
+    companyName: "",
+    contactName: "",
+    email: "",
+    phone: "",
+    orgType: "",
+    gst: "",
+    pan: "",
+    years: "",
+    territory: "",
+    volumeBand: "",
+    address: "",
+    state: "",
+    district: "",
+    area: "",
+    landmark: "",
+    pincode: "",
+    dealerLocation: { latitude: "", longitude: "", address: "" },
+  });
+  function handleMapLocationSelect(loc) {
+    setNewDealer((prev) => ({
+      ...prev,
+      dealerLocation: {
+        latitude: String(loc.latitude ?? ""),
+        longitude: String(loc.longitude ?? ""),
+        address: loc.formattedAddress || prev.dealerLocation.address,
+      },
+      state: loc.state || prev.state,
+      district: loc.district || prev.district,
+      area: loc.area || prev.area,
+      address: loc.address || prev.address,
+      landmark: loc.landmark || prev.landmark,
+      pincode: loc.pincode || prev.pincode,
+    }));
+    setHasDealerCoords(true);
+    setShowMapPicker(false);
+  }
   const PROD_LIMIT = 12;
   const nav = useNavigate();
 
@@ -223,7 +266,15 @@ export default function AdminDashboard() {
         {/* DEALERS TAB */}
         {activeTab === "dealers" && (
           <section>
-            <h2 className="text-xl font-medium mb-4">Dealer Applications</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-medium">Dealer Applications</h2>
+              <button
+                className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                onClick={() => setShowAddDealer(true)}
+              >
+                + Add Dealer
+              </button>
+            </div>
             {dealers.length === 0 ? (
               <p className="text-gray-500">No dealer applications found.</p>
             ) : (
@@ -235,9 +286,22 @@ export default function AdminDashboard() {
                   >
                     {/* Dealer Info */}
                     <div>
-                      <h3 className="text-lg font-semibold">{d.companyName}</h3>
+                      <h3 className="text-lg font-semibold">{d.companyName || d.contactName}</h3>
                       <p className="text-sm text-gray-700">{d.email}</p>
                       <p className="text-sm text-gray-700">Ph: {d.phone}</p>
+
+                      {/* Postal address block */}
+                      <div className="mt-1 text-sm text-gray-800 space-y-0.5">
+                        {(d.address || d.area || d.district || d.state || d.landmark) && (
+                          <p>
+                            <span className="font-semibold">Address:</span>{' '}
+                            {[d.address, d.area, d.district, d.state].filter(Boolean).join(', ')}
+                            {d.landmark ? ` (Landmark: ${d.landmark})` : ''}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Enquiry purpose / notes */}
                       <div className="mt-1 text-sm text-gray-800">
                         <span className="font-semibold">Purpose:</span>{' '}
                         {d.enquiryType === 'bulk' ? (
@@ -248,7 +312,9 @@ export default function AdminDashboard() {
                           'To be a dealer'
                         )}
                       </div>
-                      {d.message && <p className="mt-1">{d.message}</p>}
+                      {d.message && d.enquiryType !== 'bulk' && (
+                        <p className="mt-1">{d.message}</p>
+                      )}
                     </div>
 
                     {/* Status + Actions */}
@@ -292,6 +358,201 @@ export default function AdminDashboard() {
                   </div>
                 ))}
               </div>
+            )}
+
+            {showAddDealer && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                <div className="w-[720px] max-w-[95vw] max-h-[85vh] overflow-y-auto rounded-lg bg-white p-5 shadow-xl">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-lg font-medium">Add Dealer</h3>
+                    <button
+                      className="rounded-md border px-2 py-1 text-sm"
+                      onClick={() => setShowAddDealer(false)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    setDealerError("");
+                    const lat = Number(newDealer.dealerLocation?.latitude);
+                    const lng = Number(newDealer.dealerLocation?.longitude);
+                    if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+                      setDealerError("Please select a valid location (latitude/longitude).");
+                      return;
+                    }
+                    if (!newDealer.companyName && !newDealer.contactName) {
+                      setDealerError("Provide Company Name or Contact Name.");
+                      return;
+                    }
+                    (async () => {
+                      setSavingDealer(true);
+                      try {
+                        const payload = { ...newDealer, enquiryType: "dealer" };
+                        const created = await api.post("/dealers", payload);
+                        const id = created?.data?.data?._id;
+                        if (id) {
+                          await updateDealerStatus(id, "Approved");
+                        }
+                        await Swal.fire({ title: "Dealer added", text: "The dealer has been added and approved.", icon: "success" });
+                        setShowAddDealer(false);
+                        setNewDealer({
+                          companyName: "",
+                          contactName: "",
+                          email: "",
+                          phone: "",
+                          orgType: "",
+                          gst: "",
+                          pan: "",
+                          years: "",
+                          territory: "",
+                          volumeBand: "",
+                          address: "",
+                          state: "",
+                          district: "",
+                          area: "",
+                          landmark: "",
+                          pincode: "",
+                          dealerLocation: { latitude: "", longitude: "", address: "" },
+                        });
+                        await load();
+                      } catch (err) {
+                        const msg = err?.response?.data?.message || "Failed to add dealer.";
+                        setDealerError(msg);
+                        await Swal.fire({ title: "Failed", text: msg, icon: "error" });
+                      } finally {
+                        setSavingDealer(false);
+                      }
+                    })();
+                  }} className="space-y-3">
+                    {dealerError && (
+                      <div className="rounded-md border border-red-300 bg-red-50 px-3 py-2 text-red-700 text-sm">{dealerError}</div>
+                    )}
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <input
+                        value={newDealer.companyName}
+                        onChange={(e) => setNewDealer({ ...newDealer, companyName: e.target.value })}
+                        placeholder="Company Name"
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                      />
+                      <input
+                        value={newDealer.contactName}
+                        onChange={(e) => setNewDealer({ ...newDealer, contactName: e.target.value })}
+                        placeholder="Contact Name"
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                      />
+                      <input
+                        type="email"
+                        value={newDealer.email}
+                        onChange={(e) => setNewDealer({ ...newDealer, email: e.target.value })}
+                        placeholder="Email"
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                      />
+                      <input
+                        value={newDealer.phone}
+                        onChange={(e) => setNewDealer({ ...newDealer, phone: e.target.value })}
+                        placeholder="Phone"
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <input
+                        value={newDealer.state}
+                        onChange={(e) => setNewDealer({ ...newDealer, state: e.target.value })}
+                        placeholder="State"
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                      />
+                      <input
+                        value={newDealer.district}
+                        onChange={(e) => setNewDealer({ ...newDealer, district: e.target.value })}
+                        placeholder="District"
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                      />
+                      <input
+                        value={newDealer.area}
+                        onChange={(e) => setNewDealer({ ...newDealer, area: e.target.value })}
+                        placeholder="Area"
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                      />
+                      <input
+                        value={newDealer.pincode}
+                        onChange={(e) => setNewDealer({ ...newDealer, pincode: e.target.value })}
+                        placeholder="Pincode"
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                      />
+                      <input
+                        value={newDealer.landmark}
+                        onChange={(e) => setNewDealer({ ...newDealer, landmark: e.target.value })}
+                        placeholder="Landmark"
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                      />
+                      <input
+                        value={newDealer.address}
+                        onChange={(e) => setNewDealer({ ...newDealer, address: e.target.value })}
+                        placeholder="Address"
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                      />
+                    </div>
+
+                    <section className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 md:px-4 md:py-4 space-y-3">
+                      <div className="text-sm md:text-base font-semibold">Location</div>
+                      <p className="text-xs text-slate-600">Select a location on map; coordinates and address will be captured.</p>
+
+                      {hasDealerCoords ? (
+                        <div className="space-y-2">
+                          <div className="w-full rounded-md border border-emerald-300 bg-emerald-50 px-3 py-2 text-emerald-700 text-sm">✓ Location captured successfully</div>
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setShowMapPicker(true)}
+                              className="flex-1 inline-flex items-center justify-center gap-2 rounded-md border border-brand px-3 py-2 text-xs md:text-sm text-brand hover:bg-brand hover:text-white"
+                            >
+                              Select from Map Again
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex">
+                          <button
+                            type="button"
+                            onClick={() => setShowMapPicker(true)}
+                            className="flex-1 inline-flex items-center justify-center gap-2 rounded-md border-2 border-brand px-4 py-3 text-sm font-medium text-brand hover:bg-brand hover:text-white"
+                          >
+                            Select from Map
+                          </button>
+                        </div>
+                      )}
+
+                      {newDealer.dealerLocation.address && (
+                        <div className="text-xs text-slate-600">{newDealer.dealerLocation.address}</div>
+                      )}
+                    </section>
+
+                    <div className="flex items-center justify-end gap-2 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowAddDealer(false)}
+                        className="px-4 py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={savingDealer}
+                        className="px-4 py-2 rounded-md bg-brand text-white hover:bg-opacity-90 disabled:opacity-60"
+                      >
+                        {savingDealer ? "Saving…" : "Save & Approve"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {showMapPicker && (
+              <MapPicker onLocationSelect={handleMapLocationSelect} onClose={() => setShowMapPicker(false)} />
             )}
           </section>
         )}

@@ -33,7 +33,7 @@ export const fadeSlideUp = {
   visible: (d = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: d, duration: 1.5, ease: [0.22, 1, 0.36, 1] },
+    transition: { delay: d, duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   }),
 };
 

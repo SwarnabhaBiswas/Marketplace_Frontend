@@ -142,7 +142,7 @@ useEffect(() => {
               <div
                 ref={catRef}
                 id="catScroller"
-                className="overflow-x-auto scroll-smooth no-scrollbar touch-auto select-none cursor-grab active:cursor-grabbing snap-x snap-mandatory"
+                className="overflow-x-auto scroll-auto no-scrollbar touch-auto select-none cursor-grab active:cursor-grabbing snap-x snap-mandatory"
                 onPointerDown={onCatPointerDown}
                 onPointerMove={onCatPointerMove}
                 onPointerUp={onCatPointerUp}
