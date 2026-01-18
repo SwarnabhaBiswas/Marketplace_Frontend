@@ -43,15 +43,15 @@ useEffect(() => {
   }
 
   const catImgMap = {
-    'rigid-pvc-conduit': '/cat-rigid-pvc-conduit.png',
-    'circular-box': '/cat-circular-box.png',
-    'pvc-conduit-accessories': '/cat-pvc-conduit-accessories.png',
-    'modular-box': '/cat-modular-box.png',
+    'rigid-pvc-conduit': '/cat-rigid-pvc-conduit.jpg',
+    'circular-box': '/cat-circular-box.jpg',
+    'pvc-conduit-accessories': '/cat-pvc-conduit-accessories.jpg',
+    'modular-box': '/cat-modular-box.jpg',
     'mcb-box': '/cat-mcb-box.png',
     'mcb-distribution-box': '/cat-mcb-box.png',
-    'fan-box':'/cat-fan-box.png',
+    'fan-box':'/cat-fan-box.jpg',
     'fan-accessories':'/cat-fan-accessories.png',
-    'conceal-box':'/cat-conceal-box.png'
+    'conceal-box':'/cat-conceal-box.jpg'
   };
 
   function getCatImg(name) {
