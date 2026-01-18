@@ -85,7 +85,7 @@ export default function Support() {
                       Talk to Sales
                     </h3>
                     <p className="mt-2 text-slate-700">
-                      Interested in Swasti products? Pick up the phone to chat
+                      Interested in Swasti India products? Pick up the phone to chat
                       with a member of our sales team.
                     </p>
                     <div className="mt-4 ">

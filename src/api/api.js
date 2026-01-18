@@ -3,8 +3,6 @@ import { beginNetwork, endNetwork } from '../lib/loading';
 
 const isProd = import.meta.env.PROD;
 
-// Prefer explicit VITE_API_URL in all environments. If not provided, use '/api' in prod (expecting a proxy),
-// and fall back to local dev URL otherwise.
 const envBase = import.meta.env.VITE_API_URL && String(import.meta.env.VITE_API_URL).trim();
 const baseURL = envBase ? envBase.replace(/\/$/, '') : (isProd ? '/api' : 'http://localhost:5000/api');
 
@@ -33,5 +31,8 @@ api.interceptors.response.use(
 
 export const updateDealerStatus = (id, status) =>
   api.put(`/dealers/${id}/status`, { status });
+
+export const deleteDealer = (id) =>
+  api.delete(`/dealers/${id}`);
 
 export default api;

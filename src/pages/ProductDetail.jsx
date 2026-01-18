@@ -343,7 +343,7 @@ export default function ProductDetail() {
         </div>
       )}
       {/* Minimal footer */}
-      <footer className="bg-primary w-screen h-[4rem] text-platinum flex items-center justify-center font-semibold">Swasti@2025</footer>
+      <footer className="bg-primary w-screen h-[4rem] text-platinum flex items-center justify-center font-semibold">Swasti India Pvt. Ltd. @2026</footer>
     </div>
   );
 }

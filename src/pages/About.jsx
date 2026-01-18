@@ -14,9 +14,9 @@ export default function About(){
           <div className="container mx-auto px-4 py-12 max-w-6xl mt-20">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
               <m.div variants={containerStagger(0.08)} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
-                <m.h1 className="text-4xl sm:text-5xl font-bold" variants={fadeSlideLeft}>About Swasti</m.h1>
+                <m.h1 className="text-4xl sm:text-5xl font-bold" variants={fadeSlideLeft}>About Swasti India</m.h1>
                 <m.p className="mt-3 text-platinum/90 max-w-3xl" variants={fadeSlideLeft} custom={0.08}>
-                  Swasti delivers premium electrical conduits and accessories, committed to reliable
+                  Swasti India Pvt. Ltd. delivers premium electrical conduits and accessories, committed to reliable
                   infrastructure for homes, industry and public works. We focus on durability, certification, and
                   on-time delivery at scale.
                 </m.p>
@@ -33,7 +33,7 @@ export default function About(){
             <m.div variants={fadeSlideLeft}>
               <h2 className="text-2xl font-semibold">Company Profile</h2>
               <p className="mt-2 text-slate-700">
-              Swasti delivers uPVC conduits,
+              Swasti India Pvt. Ltd. delivers uPVC conduits,
               fittings and MS accessories that meet stringent quality benchmarks. Our team brings decades of
               product and process expertise to serve contractors & dealers.
               </p>
@@ -187,7 +187,7 @@ export default function About(){
                 />
                 <m.div variants={fadeSlideRight} custom={0.08} className="text-center sm:text-left">
                   <h3 className="text-2xl font-extrabold text-attention">Founder's Message</h3>
-                  <p className="mt-2 text-md text-slate-800">“ At Swasti Pipes, our vision has always been to deliver products that dealers and distributors can trust. We focus on consistency, durability, and timely supply, ensuring your business grows with ours. Together, we build partnerships that last as strong as our products. ”</p>
+                  <p className="mt-2 text-md text-slate-800">“ At Swasti India, our vision has always been to deliver products that dealers and distributors can trust. We focus on consistency, durability, and timely supply, ensuring your business grows with ours. Together, we build partnerships that last as strong as our products. ”</p>
                   
                 </m.div>
               </div>

@@ -1,6 +1,6 @@
 // src/pages/admin/AdminDashboard.jsx
 import React, { useEffect, useState } from "react";
-import { updateDealerStatus } from "../../api/api";
+import { updateDealerStatus, deleteDealer } from "../../api/api";
 import api from "../../api/api";
 import Header from "../../components/Header";
 import ProductForm from "../../components/ProductForm";
@@ -16,6 +16,7 @@ export default function AdminDashboard() {
   const [checking, setChecking] = useState(true);
   const [approvingId, setApprovingId] = useState(null);
   const [rejectingId, setRejectingId] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
   const [prodPage, setProdPage] = useState(1);
   const [prodTotalPages, setProdTotalPages] = useState(1);
   const [prodLoading, setProdLoading] = useState(false);
@@ -278,85 +279,157 @@ export default function AdminDashboard() {
             {dealers.length === 0 ? (
               <p className="text-gray-500">No dealer applications found.</p>
             ) : (
-              <div className="space-y-4">
-                {dealers.map((d) => (
-                  <div
-                    key={d._id}
-                    className="rounded-lg border bg-gray-100 p-4 flex flex-col md:flex-row md:items-center md:justify-between"
-                  >
-                    {/* Dealer Info */}
-                    <div>
-                      <h3 className="text-lg font-semibold">{d.companyName || d.contactName}</h3>
-                      <p className="text-sm text-gray-700">{d.email}</p>
-                      <p className="text-sm text-gray-700">Ph: {d.phone}</p>
-
-                      {/* Postal address block */}
-                      <div className="mt-1 text-sm text-gray-800 space-y-0.5">
-                        {(d.address || d.area || d.district || d.state || d.landmark) && (
-                          <p>
-                            <span className="font-semibold">Address:</span>{' '}
-                            {[d.address, d.area, d.district, d.state].filter(Boolean).join(', ')}
-                            {d.landmark ? ` (Landmark: ${d.landmark})` : ''}
-                          </p>
-                        )}
-                      </div>
-
-                      {/* Enquiry purpose / notes */}
-                      <div className="mt-1 text-sm text-gray-800">
-                        <span className="font-semibold">Purpose:</span>{' '}
-                        {d.enquiryType === 'bulk' ? (
-                          <>
-                            Buy in bulk{d.volumeBand ? ` — Qty: ${d.volumeBand}` : ''}{d.message ? ` — ${d.message}` : ''}
-                          </>
-                        ) : (
-                          'To be a dealer'
-                        )}
-                      </div>
-                      {d.message && d.enquiryType !== 'bulk' && (
-                        <p className="mt-1">{d.message}</p>
-                      )}
-                    </div>
-
-                    {/* Status + Actions */}
-                    <div className="mt-3 md:mt-0 flex flex-col items-start md:items-end">
-                      <span className="italic text-sm">{d.status}</span>
-                      {d.status === "Pending" && (
-                        <div className="mt-2 flex gap-2">
-                          <button
-                            disabled={approvingId === d._id}
-                            onClick={async () => {
-                              setApprovingId(d._id);
-                              try {
-                                await updateDealerStatus(d._id, "Approved");
-                                await load();
-                              } finally {
-                                setApprovingId(null);
-                              }
-                            }}
-                            className="rounded-md bg-green-600 px-3 py-1 text-sm text-white hover:bg-green-700 disabled:opacity-60"
-                          >
-                            {approvingId === d._id ? "Approving…" : "Approve"}
-                          </button>
-                          <button
-                            disabled={rejectingId === d._id}
-                            onClick={async () => {
-                              setRejectingId(d._id);
-                              try {
-                                await updateDealerStatus(d._id, "Rejected");
-                                await load();
-                              } finally {
-                                setRejectingId(null);
-                              }
-                            }}
-                            className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 disabled:opacity-60"
-                          >
-                            {rejectingId === d._id ? "Rejecting…" : "Reject"}
-                          </button>
+              <div className="space-y-6">
+                {(() => {
+                  const approved = dealers.filter((d) => d.status === "Approved");
+                  const rejected = dealers.filter((d) => d.status === "Rejected");
+                  const terminated = dealers.filter((d) => d.status === "Terminated");
+                  const sections = [
+                    { title: "Approved", list: approved },
+                    { title: "Rejected", list: rejected },
+                    { title: "Terminated", list: terminated },
+                  ];
+                  return sections.map(({ title, list }) => (
+                    <div key={title}>
+                      <h3 className="text-lg font-semibold">{title}</h3>
+                      {list.length === 0 ? (
+                        <p className="text-gray-500">None</p>
+                      ) : (
+                        <div className="space-y-4">
+                          {list.map((d) => (
+                            <div
+                              key={d._id}
+                              className="rounded-lg border bg-gray-100 p-4 flex flex-col md:flex-row md:items-center md:justify-between"
+                            >
+                              <div>
+                                <h3 className="text-lg font-semibold">{d.companyName || d.contactName}</h3>
+                                <p className="text-sm text-gray-700">{d.email}</p>
+                                <p className="text-sm text-gray-700">Ph: {d.phone}</p>
+                                <div className="mt-1 text-sm text-gray-800 space-y-0.5">
+                                  {(d.address || d.area || d.district || d.state || d.landmark) && (
+                                    <p>
+                                      <span className="font-semibold">Address:</span>{' '}
+                                      {[d.address, d.area, d.district, d.state].filter(Boolean).join(', ')}
+                                      {d.landmark ? ` (Landmark: ${d.landmark})` : ''}
+                                    </p>
+                                  )}
+                                </div>
+                                <div className="mt-1 text-sm text-gray-800">
+                                  <span className="font-semibold">Purpose:</span>{' '}
+                                  {d.enquiryType === 'bulk' ? (
+                                    <>Buy in bulk{d.volumeBand ? ` — Qty: ${d.volumeBand}` : ''}{d.message ? ` — ${d.message}` : ''}</>
+                                  ) : (
+                                    'To be a dealer'
+                                  )}
+                                </div>
+                              </div>
+                              <div className="mt-3 md:mt-0 flex flex-col items-start md:items-end">
+                                <span className="italic text-sm">{d.status}</span>
+                                {title === "Approved" && (
+                                  <div className="mt-2">
+                                    <button
+                                      disabled={deletingId === d._id}
+                                      onClick={async () => {
+                                        const ok = await Swal.fire({
+                                          title: "Terminate dealership?",
+                                          text: "This will mark the dealer as Terminated and send a termination email.",
+                                          icon: "warning",
+                                          showCancelButton: true,
+                                          confirmButtonColor: "#dc2626",
+                                          confirmButtonText: "Terminate",
+                                        });
+                                        if (!ok.isConfirmed) return;
+                                        setDeletingId(d._id);
+                                        try {
+                                          await deleteDealer(d._id);
+                                          await load();
+                                          await Swal.fire({ title: "Terminated", text: "Dealer has been terminated.", icon: "success" });
+                                        } catch (err) {
+                                          const msg = err?.response?.data?.message || "Termination failed";
+                                          await Swal.fire({ title: "Failed", text: msg, icon: "error" });
+                                        } finally {
+                                          setDeletingId(null);
+                                        }
+                                      }}
+                                      className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 disabled:opacity-60"
+                                    >
+                                      {deletingId === d._id ? "Terminating…" : "Terminate"}
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
-                  </div>
-                ))}
+                  ));
+                })()}
+                {/* Pending applications rendered above sections */}
+                <div>
+                  <h3 className="text-lg font-semibold">Pending</h3>
+                  {dealers.filter((d) => d.status === "Pending").length === 0 ? (
+                    <p className="text-gray-500">None</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {dealers.filter((d) => d.status === "Pending").map((d) => (
+                        <div
+                          key={d._id}
+                          className="rounded-lg border bg-gray-100 p-4 flex flex-col md:flex-row md:items-center md:justify-between"
+                        >
+                          <div>
+                            <h3 className="text-lg font-semibold">{d.companyName || d.contactName}</h3>
+                            <p className="text-sm text-gray-700">{d.email}</p>
+                            <p className="text-sm text-gray-700">Ph: {d.phone}</p>
+                          </div>
+                          <div className="mt-3 md:mt-0 flex flex-col items-start md:items-end">
+                            <span className="italic text-sm">{d.status}</span>
+                            <div className="mt-2 flex gap-2">
+                              <button
+                                disabled={approvingId === d._id}
+                                onClick={async () => {
+                                  setApprovingId(d._id);
+                                  try {
+                                    await updateDealerStatus(d._id, "Approved");
+                                    await load();
+                                    await Swal.fire({ title: "Approved", text: "Dealer approved successfully.", icon: "success" });
+                                  } catch (err) {
+                                    const msg = err?.response?.data?.message || "Approve failed";
+                                    await Swal.fire({ title: "Failed", text: msg, icon: "error" });
+                                  } finally {
+                                    setApprovingId(null);
+                                  }
+                                }}
+                                className="rounded-md bg-green-600 px-3 py-1 text-sm text-white hover:bg-green-700 disabled:opacity-60"
+                              >
+                                {approvingId === d._id ? "Approving…" : "Approve"}
+                              </button>
+                              <button
+                                disabled={rejectingId === d._id}
+                                onClick={async () => {
+                                  setRejectingId(d._id);
+                                  try {
+                                    await updateDealerStatus(d._id, "Rejected");
+                                    await load();
+                                    await Swal.fire({ title: "Rejected", text: "Dealer rejected.", icon: "success" });
+                                  } catch (err) {
+                                    const msg = err?.response?.data?.message || "Reject failed";
+                                    await Swal.fire({ title: "Failed", text: msg, icon: "error" });
+                                  } finally {
+                                    setRejectingId(null);
+                                  }
+                                }}
+                                className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 disabled:opacity-60"
+                              >
+                                {rejectingId === d._id ? "Rejecting…" : "Reject"}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 

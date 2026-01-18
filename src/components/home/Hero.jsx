@@ -52,7 +52,7 @@ export default function Hero() {
           <h1 className="text-3xl sm:text-5xl lg:text-6xl md:mt-40 mt-40 font-extrabold leading-tight">
             {/* lg+: Swasti big, Conduit Pipes & Accessories smaller */}
             <span className="hidden lg:block bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-7xl">
-              Swasti
+              Swasti India
             </span>
             <span className="hidden lg:block bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-5xl mt-3">
               Conduit Pipes & Accessories
@@ -60,7 +60,7 @@ export default function Hero() {
 
             {/* Mobile (<sm): Swasti big, Conduit Pipes & Accessories split */}
             <span className="block sm:hidden bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-5xl">
-              Swasti
+              Swasti  India
             </span>
             <span className="block sm:hidden bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-xl mt-2">
               Conduit Pipes &
@@ -71,7 +71,7 @@ export default function Hero() {
 
             {/* md only */}
             <span className="hidden md:block lg:hidden bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-6xl">
-              Swasti
+              Swasti India
             </span>
             <span className="hidden md:block lg:hidden bg-gradient-to-b from-[#387fc7] to-[#020e1aff] bg-clip-text text-transparent text-2xl mt-2">
               Conduit Pipes &
