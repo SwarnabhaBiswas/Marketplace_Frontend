@@ -291,7 +291,7 @@ export default function DealersMap() {
                               aria-label="Open in Google Maps"
                               title="Open in Google Maps"
                             >
-                              🗺️
+                              📍 google maps
                             </a>
                           </div>
                         )}
