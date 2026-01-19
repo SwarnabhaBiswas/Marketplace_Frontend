@@ -305,7 +305,7 @@ export default function DealersMap() {
 
           {/* Optional side list of nearest dealers */}
           <aside className="w-full lg:w-80 max-h-[320px] sm:max-h-[400px] lg:max-h-[520px] overflow-y-auto border border-slate-200 rounded-lg bg-white p-3 text-sm mt-2 lg:mt-0">
-            <h2 className="font-semibold mb-2 text-base">Dealers Available (<h3>click on pinpoint for more information)</h3></h2>
+            <h2 className="font-semibold mb-2 text-base">Dealers Available <h4>(click on pinpoint for more information)</h4></h2>
             {nearest.length === 0 && (
               <p className="text-xs text-slate-600">
                 {userLocation
