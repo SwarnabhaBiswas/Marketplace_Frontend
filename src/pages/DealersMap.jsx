@@ -204,7 +204,7 @@ export default function DealersMap() {
         <div className="container mx-auto px-4 py-4 md:py-6">
           <h1 className="text-2xl md:text-3xl font-semibold mb-2">Our Dealer Network</h1>
           <p className="text-sm md:text-base text-slate-700 mb-3">
-            Explore approved Swasti dealers on the map. If you share your location, we will highlight the nearest dealers around you.
+            Explore approved Swasti dealers on the map. Share your location, to find the nearest dealers around you.
           </p>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4">
             <p className="text-xs text-slate-600 max-w-xl">{geoStatus}</p>
@@ -305,7 +305,7 @@ export default function DealersMap() {
 
           {/* Optional side list of nearest dealers */}
           <aside className="w-full lg:w-80 max-h-[320px] sm:max-h-[400px] lg:max-h-[520px] overflow-y-auto border border-slate-200 rounded-lg bg-white p-3 text-sm mt-2 lg:mt-0">
-            <h2 className="font-semibold mb-2 text-base">Dealers Available</h2>
+            <h2 className="font-semibold mb-2 text-base">Dealers Available (<h3>click on pinpoint for more information)</h3></h2>
             {nearest.length === 0 && (
               <p className="text-xs text-slate-600">
                 {userLocation
