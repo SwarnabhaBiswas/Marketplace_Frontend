@@ -102,20 +102,6 @@ export default function Footer(){
               >
                 <LinkedInIcon />
               </a>
-              <a 
-                href="#" 
-                aria-label="YouTube"
-                className="text-platinum/70 hover:text-white hover:scale-110 transition-all duration-200"
-              >
-                <YouTubeIcon />
-              </a>
-              <a 
-                href="#" 
-                aria-label="Pinterest"
-                className="text-platinum/70 hover:text-white hover:scale-110 transition-all duration-200"
-              >
-                <PinterestIcon />
-              </a>
             </div>
           </div>
           
