@@ -2,38 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://www.swastipipes.com/</loc>
-    <lastmod>2025-10-09</lastmod>
+    <loc>https://www.swastiindia.com/</loc>
+    <lastmod>2026-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
 
   <url>
-    <loc>https://www.swastipipes.com/products</loc>
-    <lastmod>2025-10-09</lastmod>
+    <loc>https://www.swastiindia.com/products</loc>
+    <lastmod>2026-01-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://www.swastipipes.com/about</loc>
-    <lastmod>2025-10-09</lastmod>
+    <loc>https://www.swastiindia.com/about</loc>
+    <lastmod>2026-01-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
 
   <url>
-    <loc>https://www.swastipipes.com/support</loc>
-    <lastmod>2025-10-09</lastmod>
+    <loc>https://www.swastiindia.com/support</loc>
+    <lastmod>2026-01-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
 
   <url>
-    <loc>https://www.swastipipes.com/become-dealer</loc>
-    <lastmod>2025-10-09</lastmod>
+    <loc>https://www.swastiindia.com/become-dealer</loc>
+    <lastmod>2026-01-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+  </url>
+
+  <!-- Locate Us / Dealers Map -->
+  <url>
+    <loc>https://www.swastiindia.com/dealers-map</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
 
 </urlset>
