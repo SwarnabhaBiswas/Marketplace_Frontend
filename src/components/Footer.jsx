@@ -75,28 +75,28 @@ export default function Footer(){
           <div className="flex justify-center mb-4">
             <div className="flex items-center gap-4">
               <a 
-                href="#" 
+                href="https://www.facebook.com/share/1AfJX8c1p3/" 
                 aria-label="Facebook"
                 className="text-platinum/70 hover:text-white hover:scale-110 transition-all duration-200"
               >
                 <FacebookIcon />
               </a>
               <a 
-                href="#" 
+                href="https://x.com/SwastiPipes?t=yefsLz--NxYLLzY_r5ksyA&s=09" 
                 aria-label="Twitter"
                 className="text-platinum/70 hover:text-white hover:scale-110 transition-all duration-200"
               >
                 <TwitterIcon />
               </a>
               <a 
-                href="#" 
+                href="https://www.instagram.com/swasti__india?igsh=aG1rZndmZjZ4OGNr"
                 aria-label="Instagram"
                 className="text-platinum/70 hover:text-white hover:scale-110 transition-all duration-200"
               >
                 <InstagramIcon />
               </a>
               <a 
-                href="#" 
+                href="https://www.linkedin.com/company/swasti-india-private-limited/" 
                 aria-label="LinkedIn"
                 className="text-platinum/70 hover:text-white hover:scale-110 transition-all duration-200"
               >
