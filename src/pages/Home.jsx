@@ -6,6 +6,7 @@ import WhoWeAre from "../components/home/WhoWeAre";
 import CategoriesSection from "../components/home/CategoriesSection";
 import ProductHighlights from "../components/home/ProductHighlights";
 import DealerCTA from "../components/home/DealerCTA";
+import LocateUs from "../components/home/LocateUs";
 import GetInTouch from "../components/home/GetInTouch";
 import AssistanceCTA from "../components/home/AssistanceCTA";
 import ScrollToTop from "../components/ScrollToTop";
@@ -27,6 +28,9 @@ export default function Home() {
         </section>
         <section id="products" className="section-spacing">
           <ProductHighlights />
+        </section>
+        <section id="locate-us" className="section-spacing">
+          <LocateUs />
         </section>
         <section id="dealers" className="section-spacing">
           <DealerCTA />

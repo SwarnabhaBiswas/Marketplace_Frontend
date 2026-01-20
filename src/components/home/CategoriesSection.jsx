@@ -47,10 +47,10 @@ useEffect(() => {
     'circular-box': '/cat-circular-box.jpg',
     'pvc-conduit-accessories': '/cat-pvc-conduit-accessories.jpg',
     'modular-box': '/cat-modular-box.jpg',
-    'mcb-box': '/cat-mcb-box.png',
-    'mcb-distribution-box': '/cat-mcb-box.png',
+    'mcb-box': '/cat-mcb-box.jpeg',
+    'mcb-distribution-box': '/cat-mcb-box.jpeg',
     'fan-box':'/cat-fan-box.jpg',
-    'fan-accessories':'/cat-fan-accessories.png',
+    'fan-accessories':'/cat-fan-accessories.jpeg',
     'conceal-box':'/cat-conceal-box.jpg'
   };
 

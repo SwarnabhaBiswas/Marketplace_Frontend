@@ -41,6 +41,9 @@ export default function DealersMap() {
   const [pin, setPin] = React.useState('');
   const [pinSearching, setPinSearching] = React.useState(false);
   const [pinError, setPinError] = React.useState('');
+  const [city, setCity] = React.useState('');
+  const [citySearching, setCitySearching] = React.useState(false);
+  const [cityError, setCityError] = React.useState('');
   const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   const tileAttribution = '&copy; OpenStreetMap contributors';
 
@@ -197,6 +200,78 @@ export default function DealersMap() {
     setNearest(withDistance);
   }
 
+  // Geocode city using Nominatim, fallback to client-side filter if geocode fails
+  async function geocodeCity(name) {
+    try {
+      const resp = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(name)}&countrycodes=in&format=json&limit=1`,
+        { headers: { 'Accept-Language': 'en' } }
+      );
+      if (!resp.ok) return null;
+      const data = await resp.json();
+      const first = Array.isArray(data) ? data[0] : null;
+      if (first && first.lat && first.lon) {
+        return { lat: parseFloat(first.lat), lng: parseFloat(first.lon), display: first.display_name || '' };
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  async function handleCitySearch(e) {
+    e?.preventDefault?.();
+    setCityError('');
+    const q = String(city).trim();
+    if (!q) {
+      setCityError('Enter a city name.');
+      return;
+    }
+    setCitySearching(true);
+    // Try geocode to recenter map and compute distances
+    const geo = await geocodeCity(q);
+    setCitySearching(false);
+    if (geo && Number.isFinite(geo.lat) && Number.isFinite(geo.lng)) {
+      setCenter([geo.lat, geo.lng]);
+      setZoom(11);
+      setGeoStatus(`Showing dealers for city "${q}".`);
+      setShowLocationPrompt(false);
+      const withDistance = dealers
+        .map((d) => {
+          const dl = d.dealerLocation || {};
+          const lat = Number(dl.latitude);
+          const lng = Number(dl.longitude);
+          if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+          const distanceKm = Math.round(haversineKm(geo.lat, geo.lng, lat, lng) * 10) / 10;
+          return { ...d, distanceKm };
+        })
+        .filter(Boolean)
+        .sort((a, b) => (a.distanceKm ?? Infinity) - (b.distanceKm ?? Infinity));
+      // Prioritize those matching city name
+      const matchCity = (d) => {
+        const parts = [d.city, d.district, d.state, d?.dealerLocation?.address, d.address].filter(Boolean).join(' ').toLowerCase();
+        return parts.includes(q.toLowerCase());
+      };
+      const prioritized = withDistance.sort((a, b) => {
+        const am = matchCity(a) ? 0 : 1;
+        const bm = matchCity(b) ? 0 : 1;
+        if (am !== bm) return am - bm;
+        return (a.distanceKm ?? Infinity) - (b.distanceKm ?? Infinity);
+      });
+      setNearest(prioritized);
+    } else {
+      // Fallback: filter by city substring match without recenter
+      const filtered = dealers.filter((d) => {
+        const parts = [d.city, d.district, d.state, d?.dealerLocation?.address, d.address].filter(Boolean).join(' ').toLowerCase();
+        return parts.includes(q.toLowerCase());
+      });
+      if (filtered.length === 0) {
+        setCityError('No dealers found for this city.');
+      }
+      setNearest(filtered);
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -204,7 +279,7 @@ export default function DealersMap() {
         <div className="container mx-auto px-4 py-4 md:py-6">
           <h1 className="text-2xl md:text-3xl font-semibold mb-2">Our Dealer Network</h1>
           <p className="text-sm md:text-base text-slate-700 mb-3">
-            Explore approved Swasti dealers on the map. Share your location, to find the nearest dealers around you.
+            Explore approved Swasti India Pvt. Ltd. dealers on the map. If you share your location, we will highlight the nearest dealers around you.
           </p>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4">
             <p className="text-xs text-slate-600 max-w-xl">{geoStatus}</p>
@@ -235,6 +310,24 @@ export default function DealersMap() {
               {pinSearching ? 'Searching…' : 'Search PIN'}
             </button>
             {pinError && <span className="text-xs text-red-600">{pinError}</span>}
+          </form>
+          {/* City search */}
+          <form onSubmit={handleCitySearch} className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-4">
+            <input
+              type="text"
+              placeholder="Search by city (e.g., Bengaluru)"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="w-full sm:w-64 rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+            />
+            <button
+              type="submit"
+              disabled={citySearching || city.trim().length === 0}
+              className="inline-flex items-center gap-2 rounded-md border border-brand px-4 py-2 text-sm text-brand hover:bg-brand hover:text-white disabled:opacity-60"
+            >
+              {citySearching ? 'Searching…' : 'Search City'}
+            </button>
+            {cityError && <span className="text-xs text-red-600">{cityError}</span>}
           </form>
           {error && <p className="text-sm text-red-600 mb-3">{error}</p>}
         </div>
@@ -268,14 +361,23 @@ export default function DealersMap() {
                 const lng = Number(loc.longitude);
                 const position = [lat, lng];
                 const isNearest = nearestIds.has(String(d._id));
+                const fullAddr = [
+                  d.address,
+                  d.area,
+                  d.landmark,
+                  d.city,
+                  d.district,
+                  d.state,
+                  d.pincode
+                ].filter(Boolean).join(', ');
+                const extraAddr = loc.address ? ` (${loc.address})` : '';
                 return (
                   <Marker key={d._id} position={position}>
                     <Popup>
                       <div className="space-y-1">
                         <h3 className="font-semibold text-sm md:text-base">{d.companyName || d.contactName}</h3>
-                        <p className="text-xs text-slate-700">
-                          {[d.city, d.district, d.state].filter(Boolean).join(', ') || loc.address}
-                        </p>
+                        <p className="text-xs text-slate-700">{fullAddr || loc.address}</p>
+                        {loc.address && <p className="text-[11px] text-slate-500">Ref: {loc.address}</p>}
                         {d.phone && (
                           <p className="text-xs">
                             <span className="font-semibold">Phone:</span> {d.phone}
@@ -291,7 +393,7 @@ export default function DealersMap() {
                               aria-label="Open in Google Maps"
                               title="Open in Google Maps"
                             >
-                              📍 google maps
+                              🗺️
                             </a>
                           </div>
                         )}
@@ -305,7 +407,7 @@ export default function DealersMap() {
 
           {/* Optional side list of nearest dealers */}
           <aside className="w-full lg:w-80 max-h-[320px] sm:max-h-[400px] lg:max-h-[520px] overflow-y-auto border border-slate-200 rounded-lg bg-white p-3 text-sm mt-2 lg:mt-0">
-            <h2 className="font-semibold mb-2 text-base">Dealers Available <h4>(click on pinpoint for more information)</h4></h2>
+            <h2 className="font-semibold mb-2 text-base">Dealers Available</h2>
             {nearest.length === 0 && (
               <p className="text-xs text-slate-600">
                 {userLocation
@@ -316,12 +418,19 @@ export default function DealersMap() {
             <ul className="space-y-2">
               {nearest.map((d) => {
                 const loc = d.dealerLocation || {};
+                const fullAddr = [
+                  d.address,
+                  d.area,
+                  d.landmark,
+                  d.city,
+                  d.district,
+                  d.state,
+                  d.pincode
+                ].filter(Boolean).join(', ');
                 return (
                   <li key={d._id} className="border-b last:border-b-0 border-slate-200 pb-2">
                     <div className="font-medium text-sm">{d.companyName || d.contactName}</div>
-                    <div className="text-xs text-slate-700">
-                      {[d.city, d.district, d.state].filter(Boolean).join(', ') || loc.address}
-                    </div>
+                    <div className="text-xs text-slate-700">{fullAddr || loc.address}</div>
                     {d.distanceKm != null && (
                       <div className="text-[11px] text-slate-500">Approx. {d.distanceKm} km away</div>
                     )}
