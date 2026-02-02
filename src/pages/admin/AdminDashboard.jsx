@@ -381,6 +381,23 @@ export default function AdminDashboard() {
                             <h3 className="text-lg font-semibold">{d.companyName || d.contactName}</h3>
                             <p className="text-sm text-gray-700">{d.email}</p>
                             <p className="text-sm text-gray-700">Ph: {d.phone}</p>
+                            <div className="mt-1 text-sm text-gray-800 space-y-0.5">
+                              {(d.address || d.area || d.district || d.state || d.landmark) && (
+                                <p>
+                                  <span className="font-semibold">Address:</span>{' '}
+                                  {[d.address, d.area, d.district, d.state].filter(Boolean).join(', ')}
+                                  {d.landmark ? ` (Landmark: ${d.landmark})` : ''}
+                                </p>
+                              )}
+                            </div>
+                            <div className="mt-1 text-sm text-gray-800">
+                              <span className="font-semibold">Purpose:</span>{' '}
+                              {d.enquiryType === 'bulk' ? (
+                                <>Buy in bulk{d.volumeBand ? ` — Qty: ${d.volumeBand}` : ''}{d.message ? ` — ${d.message}` : ''}</>
+                              ) : (
+                                'To be a dealer'
+                              )}
+                            </div>
                           </div>
                           <div className="mt-3 md:mt-0 flex flex-col items-start md:items-end">
                             <span className="italic text-sm">{d.status}</span>
